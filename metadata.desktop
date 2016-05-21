@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=showerthoughts
+Comment=Prints a quote from /r/showerthoughts
+Icon=text-field
+ 
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=ui/main.qml
+X-Plasma-DefaultSize=300,120
+ 
+X-KDE-PluginInfo-Author=Vlad
+X-KDE-PluginInfo-Email=
+X-KDE-PluginInfo-Website=
+X-KDE-PluginInfo-Category=
+X-KDE-PluginInfo-Name=showerthoughts
+X-KDE-PluginInfo-Version=0.1
+ 
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-ServiceTypes=Plasma/Applet
+Type=Service 
