@@ -6,15 +6,10 @@ Item {
 
     width: 250
     height: 300
-//     property bool backgroundHints:true
-// onClicked: statusSource.restart()
+
     property string isp: ""
-    property int running: 1
+    property string url: ""
     
-//     Component.onClicked: {
-// 	  statusSource.restart()
-//       
-//     }
     Component.onCompleted: {
 	plasmoid.backgroundHints = 0;
 //         plasmoid.addEventListener('ConfigChanged', configChanged);	
@@ -29,49 +24,11 @@ Item {
 		style: Text.Outline
 		styleColor: "black"
 		color: "white"
+		wrapMode : Text.WordWrap
+		width: root.width
 		text: root.isp 
 	}
 	
-    }
-    MouseArea {
-        anchors.fill: parent
-        //Al hacer el interval cero se apaga, al hacerlo >0 se vuelve a prender
-        //Habra una mejor forma de hacer reset?
-        onClicked: {
- 	  root.running=0
- 	  root.running=1
-	}
-    }
-
-    
-    PlasmaCore.DataSource {
-        id: statusSource
-        engine: 'executable'
-        //Usa el top 100, por eso necesita un número entre 0 y 99
-	//Esto se podría hacer más facilmente en qml puro, pero no se como.
-	connectedSources: [ 'curl -s --connect-timeout 15 -A "/u/thevladsoft" "https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100" | python -c \'import sys, random, json, textwrap; randnum = random.randint(0,99); response = json.load(sys.stdin)["data"]["children"][randnum]["data"];\
-	print( textwrap.fill(response["title"],40) + "\\n    -" + response["author"] );\' 2>/dev/null || echo "No connection" ' ]
-        //Trato de conectarme a la fuente, en este caso, ejecutar la linea anterior
-        onSourceConnected: {
-	    root.isp = "Loading..."
-	    tooltip.mainText = "Loading..."
-	}
-        //La data cambio
-        onNewData: {
-            root.isp = data.stdout;
-	    //Si no dio error, pone el nombre del autor en el subtext del tooltip
-	    if (data.stdout.split("\n").length > 2){
-	      //Lo separa en lines, agarra todo menos las dos ultimas linea
-	      //(La ultima está en blanco), y las vuelve a unir.
-		tooltip.mainText = data.stdout.split("\n").slice(0,data.stdout.split("\n").length-2).join(" ");
-		tooltip.subText = data.stdout.split("\n")[0,data.stdout.split("\n").length-2];
-	    }else{
-	        tooltip.mainText = data.stdout;
-		tooltip.subText = "";
-	    }
-        }
-        //cada 25 min
-        interval: 25 * 60 * 1000 * root.running
     }
     
     PlasmaCore.ToolTip {
@@ -80,6 +37,61 @@ Item {
       mainText: ""
       
     }
+    
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+        onClicked: {
+	  onTriggered: print(mouse.button);if (mouse.button == Qt.LeftButton) {time.restart()} else { Qt.openUrlExternally(root.url);}
+	}
+    }
+    
+        Timer {
+	  id: time
+	  running: true
+	  triggeredOnStart: true
+	  interval: 25 * 60 * 1000
+	  onTriggered: request('https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100',callback)
+    }
+
+    
+    function request(url, callback) {
+      //XMLHttpRequest hace cache de la data. Sin embargo, después de un rato esta
+      //caduca (creo) y descarga data nueva, asi que todo esta bien
+       var xhr = new XMLHttpRequest();
+       
+       xhr.onreadystatechange = (function f() {
+	   if (xhr.readyState == 4) { callback(xhr);}
+	   else{
+	     root.isp = "Loading...";
+	     tooltip.mainText = "Loading...";
+	     tooltip.subText = "";
+	  }
+         });
+       xhr.open('GET', url, true);
+       xhr.setRequestHeader('User-Agent','/u/thevladsoft');
+       XMLHttpRequest.timeout = 15000
+       xhr.send();
+   }
+   
+   function callback(x){
+        if (x.responseText) {
+            var d = JSON.parse(x.responseText);
+	    N=Math.floor(Math.random()*100)
+            root.isp = d["data"]["children"][N]["data"].title
+	    root.isp += "\n      -"+d["data"]["children"][N]["data"].author
+	    tooltip.mainText = d["data"]["children"][N]["data"].title
+	    tooltip.subText = "      -"+d["data"]["children"][N]["data"].author
+	    root.url = d["data"]["children"][N]["data"].url
+        }else{
+	    root.isp = "Connection failed\n      -Showerthoughts.plasmoid"
+	    tooltip.mainText = "Connection failed\n      -Showerthoughts.plasmoid"
+	    tooltip.subText = "";
+	    root.url = ""
+	}
+    }
+  
 }
 
+    
 
