@@ -50,7 +50,7 @@ Item {
 	  id: time
 	  running: true
 	  triggeredOnStart: true
-	  interval: 25 * 60 * 1000
+	  interval: 15 * 60 * 1000
 	  onTriggered: request('https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100',callback)
     }
 
