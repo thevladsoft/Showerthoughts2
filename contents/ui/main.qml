@@ -1,5 +1,8 @@
-import QtQuick 1.0;
-import org.kde.plasma.core 0.1 as PlasmaCore
+import QtQuick 2.0;
+// import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
+// import QtQuick.Controls 2.1
 
 Item {
     id:root
@@ -18,23 +21,24 @@ Item {
 
 
     Column{
-        
+    PlasmaCore.ToolTipArea {
+      id: tooltip
+      width: root.width
+      height: root.height
+      mainText: ""        
         Text {  
 // 		verticalAlignment: Text.AlignVCenter
-		style: Text.Outline
-		styleColor: "black"
-		color: "white"
-		wrapMode : Text.WordWrap
-		width: root.width
-		text: root.isp 
-	}
+         style: Text.Outline
+		 styleColor: "black"
+		 color: "white"
+		 wrapMode : Text.WordWrap
+		 width: root.width
+		 text: root.isp 
+	    }
 	
     }
     
-    PlasmaCore.ToolTip {
-      id: tooltip
-      target: root
-      mainText: ""
+
       
     }
     
@@ -77,7 +81,7 @@ Item {
    function callback(x){
         if (x.responseText) {
             var d = JSON.parse(x.responseText);
-	    N=Math.floor(Math.random()*100)
+	    var N=Math.floor(Math.random()*100)
             root.isp = d["data"]["children"][N]["data"].title
 	    root.isp += "\n      -"+d["data"]["children"][N]["data"].author
 	    tooltip.mainText = d["data"]["children"][N]["data"].title

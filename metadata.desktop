@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=showerthoughts
+Name=showerthoughts2
 Comment=Prints a quote from /r/showerthoughts
 Icon=text-field
  
@@ -11,7 +11,7 @@ X-KDE-PluginInfo-Author=Vlad
 X-KDE-PluginInfo-Email=
 X-KDE-PluginInfo-Website=
 X-KDE-PluginInfo-Category=
-X-KDE-PluginInfo-Name=showerthoughts
+X-KDE-PluginInfo-Name=showerthoughts2
 X-KDE-PluginInfo-Version=0.1
  
 X-KDE-PluginInfo-Depends=
