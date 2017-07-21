@@ -22,6 +22,14 @@
         <label>Subreddit</label>
         <default>showerthoughts</default>
     </entry>
+    <entry name="tit_o_img" type="Boolean">
+        <label>Texto o Imagen</label>
+        <default>false</default>
+    </entry>
+    <entry name="back_img" type="Boolean">
+        <label>Imagen de fondo</label>
+        <default>true</default>
+    </entry>
   </group>
 
 </kcfg>

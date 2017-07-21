@@ -34,12 +34,36 @@ Item {
     property alias cfg_index_top: tiempo_cfg.currentIndex
     property alias cfg_intervalo: spin.value
     property alias cfg_subreddit: sub.text
-
+    property alias cfg_tit_o_img: imagen_check.checked
+    property alias cfg_back_img: backcheck.checked
+    
     
     QtLayouts.ColumnLayout {
         spacing: units.smallSpacing * 2
 //         anchors.left: parent.left
 //         anchors.horizontalCenter: parent.horizontalCenter
+        QtControls.Label {
+                    QtLayouts.Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignBottom
+                    Layout.minimumHeight : units.smallSpacing * 2
+                    text: "Mostrar:"
+        }
+        RowLayout{ 
+            QtControls.ExclusiveGroup { id: tabPositionGroup }
+            QtControls.RadioButton {
+                id: titulo_check
+                text: "el título del post"
+                checked: true
+                exclusiveGroup: tabPositionGroup
+            }
+            QtControls.RadioButton {
+                id: imagen_check
+                text: "la imágen del post"
+                exclusiveGroup: tabPositionGroup
+            }
+        }
+        
         QtControls.Label {
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
@@ -121,8 +145,25 @@ Item {
                     Layout.minimumWidth : 300
 //                      placeholderText: qsTr("Enter         name")
         }
+        QtControls.Label {//un separador
+                    QtLayouts.Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignBottom
+                    Layout.minimumHeight : units.smallSpacing * 2
+                    text: ""
+        }
+        QtControls.CheckBox {
+            id: backcheck
+            QtLayouts.Layout.fillWidth: true
+//             horizontalAlignment: Text.AlignLeft
+//             verticalAlignment: Text.AlignBottom
+//             Layout.minimumHeight : units.smallSpacing * 8
+            text: "Mostrar imágen del subreddit como fondo:"
+            checked: true
+        }
                     
     }
+    
     
     
 //     Component.onDestruction:{
