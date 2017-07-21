@@ -2,6 +2,7 @@ import QtQuick 2.0;
 // import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick.Controls 1.3 as QtControls
 // import QtQuick.Controls 2.1
 
 Item {
@@ -22,7 +23,7 @@ Item {
     Connections {
         target: plasmoid.configuration
         onIntervaloChanged: {
-            print("--..--");
+//             print("--..--");
             time.restart();
         }
         onTiempo_topChanged: {
@@ -36,20 +37,37 @@ Item {
 
 
     Column{
-    PlasmaCore.ToolTipArea {
-      id: tooltip
-      width: root.width
-      height: root.height
-      mainText: ""        
-        Text {  
-// 		verticalAlignment: Text.AlignVCenter
-         style: Text.Outline
-		 styleColor: "black"
-		 color: "white"
-		 wrapMode : Text.WordWrap
-		 width: root.width
-		 text: root.isp 
-	    }
+        QtControls.ScrollView{
+            id: scrolly
+            width: root.width
+            height: root.height
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+            contentItem :tooltip
+            PlasmaCore.ToolTipArea {
+            id: tooltip
+             width: root.width-10
+             height: root.height+20
+             mainText: ""        
+             Text {  
+                id: texty
+        // 		verticalAlignment: Text.AlignVCenter
+                style: Text.Outline
+                styleColor: "black"
+                color: "white"
+                wrapMode : Text.WordWrap
+                width: tooltip.width
+                height: tooltip.height
+                text: root.isp 
+             }
+             MouseArea {
+                anchors.fill: texty
+                acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+                onClicked: {
+                    onTriggered: print(mouse.button);if (mouse.button == Qt.LeftButton) {time.restart()} else { Qt.openUrlExternally(root.url);}
+                }
+             }
+            }
 	
     }
     
@@ -57,13 +75,7 @@ Item {
       
     }
     
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-        onClicked: {
-	  onTriggered: print(mouse.button);if (mouse.button == Qt.LeftButton) {time.restart()} else { Qt.openUrlExternally(root.url);}
-	}
-    }
+
     
         Timer {
 	  id: time
@@ -72,6 +84,8 @@ Item {
 	  interval: plasmoid.configuration.intervalo * 60 * 1000
 	  onTriggered: {
           request('https://www.reddit.com/r/'+plasmoid.configuration.subreddit+'/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',callback);
+//            texty.anchors.top = scrolly.top
+//           print(texty.y+"-.-");
 //           print('https://www.reddit.com/r/showerthoughts/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',plasmoid.configuration.intervalo,interval);
       }
     }
