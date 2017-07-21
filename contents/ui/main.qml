@@ -12,10 +12,25 @@ Item {
 
     property string isp: ""
     property string url: ""
+    property string tiempo_top
     
     Component.onCompleted: {
 	plasmoid.backgroundHints = 0;
-//         plasmoid.addEventListener('ConfigChanged', configChanged);	
+//          Component.addEventListener('ConfigChanged', configChanged);	
+    }
+    
+    Connections {
+        target: plasmoid.configuration
+        onIntervaloChanged: {
+            print("--..--");
+            time.restart();
+        }
+        onTiempo_topChanged: {
+            time.restart();
+        }
+        onSubredditChanged: {
+            time.restart();
+        }
     }
    
 
@@ -54,8 +69,11 @@ Item {
 	  id: time
 	  running: true
 	  triggeredOnStart: true
-	  interval: 15 * 60 * 1000
-	  onTriggered: request('https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100',callback)
+	  interval: plasmoid.configuration.intervalo * 60 * 1000
+	  onTriggered: {
+          request('https://www.reddit.com/r/'+plasmoid.configuration.subreddit+'/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',callback);
+//           print('https://www.reddit.com/r/showerthoughts/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',plasmoid.configuration.intervalo,interval);
+      }
     }
 
     

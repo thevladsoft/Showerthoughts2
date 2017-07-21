@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="tiempo_top" type="String">
+        <label>Cuando</label>
+        <default>week</default>
+    </entry>
+    <entry name="index_top" type="int">
+        <label>Cuando indice</label>
+        <default>2</default>
+    </entry>
+    <entry name="intervalo" type="int">
+        <label>Cuando repite</label>
+        <default>15</default>
+    </entry>
+    <entry name="subreddit" type="String">
+        <label>Subreddit</label>
+        <default>showerthoughts</default>
+    </entry>
+  </group>
+
+</kcfg>
