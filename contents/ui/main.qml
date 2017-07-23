@@ -290,18 +290,34 @@ Item {
 //        xhr.responseType = "document"
        
        xhr.onreadystatechange = (function f() {
-	   if (xhr.readyState == 4) { callback(xhr);print("####"+xhr.status)}
+	   if (xhr.readyState == 4) { callback(xhr);/*print("####"+xhr.status)*/}
 	   else{
          busy.visible = true
 // 	     root.isp = "Loading...";
          root.isp = "";
 	     tooltip.mainText = "Loading...";
 	     tooltip.subText = "";
+         thumb.source = ""
 	  }
          });
        xhr.open('GET', url, true);
        xhr.setRequestHeader('User-Agent','/u/thevladsoft');
 //        xhr.setRequestHeader('Accept','application/json');
+       XMLHttpRequest.timeout = 15000
+       xhr.send();
+   }
+   
+   function request2(url, callback) {
+       var xhr = new XMLHttpRequest();
+       
+       xhr.onreadystatechange = (function f() {
+            if (xhr.readyState == 4) { callback(xhr);}
+            else{
+                root.imagenurl = ""
+            }
+       });
+       xhr.open('GET', url, true);
+//        xhr.setRequestHeader('User-Agent','/u/thevladsoft');
        XMLHttpRequest.timeout = 15000
        xhr.send();
    }
