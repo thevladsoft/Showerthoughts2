@@ -14,14 +14,17 @@
         <label>Cuando indice</label>
         <default>2</default>
     </entry>
+    
     <entry name="intervalo" type="int">
         <label>Cuando repite</label>
         <default>15</default>
     </entry>
+    
     <entry name="subreddit" type="String">
         <label>Subreddit</label>
         <default>showerthoughts</default>
     </entry>
+    
     <entry name="tit_o_img" type="Boolean">
         <label>Texto o Imagen</label>
         <default>false</default>
@@ -30,10 +33,24 @@
         <label>Texto e Imagen</label>
         <default>false</default>
     </entry>
+    <entry name="trylow" type="Boolean">
+        <label>Intenta usar thumbnail 1 como imagen</label>
+        <default>false</default>
+    </entry>  
+    <entry name="tryhigh" type="Boolean">
+        <label>Intenta usar thumbnail 2 como imagen</label>
+        <default>true</default>
+    </entry>  
+    <entry name="tryurl" type="Boolean">
+        <label>Intenta usar la url como imagen</label>
+        <default>false</default>
+    </entry>   
+    
     <entry name="back_img" type="Boolean">
         <label>Imagen de fondo</label>
         <default>true</default>
     </entry>
+    
     <entry name="middledirect" type="Boolean">
         <label>Abre el link directo</label>
         <default>false</default>

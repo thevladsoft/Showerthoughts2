@@ -36,6 +36,9 @@ Item {
     property alias cfg_subreddit: sub.text
     property alias cfg_tit_o_img: imagen_check.checked
     property alias cfg_tit_e_img: both_check.checked
+    property alias cfg_tryurl: urlres_check.checked
+    property alias cfg_trylow: lowres_check.checked
+    property alias cfg_tryhigh: highres_check.checked
     property alias cfg_back_img: backcheck.checked
     property alias cfg_middledirect: middledirectcheck.checked
     
@@ -44,42 +47,99 @@ Item {
         spacing: units.smallSpacing * 2
 //         anchors.left: parent.left
 //         anchors.horizontalCenter: parent.horizontalCenter
-        QtControls.Label {
-                    QtLayouts.Layout.fillWidth: true
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignBottom
-                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
-                    text: "Mostrar:"
-        }
-        QtLayouts.RowLayout{ 
-            QtControls.ExclusiveGroup { id: tabPositionGroup }
-            QtControls.RadioButton {
-                id: titulo_check
-                text: "el título del post"
-                checked: true
-                exclusiveGroup: tabPositionGroup
-            }
-            QtControls.RadioButton {
-                id: imagen_check
-                text: "la imágen del post"
-                exclusiveGroup: tabPositionGroup
-            }
-            QtControls.RadioButton {
-                id: both_check
-                text: "la imágen y el título del post"
-                exclusiveGroup: tabPositionGroup
-            }
-        }
-        
+
         QtControls.Label {
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
                     QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                    text: "Mostrar los mensajes de:"
+                    text: 'subreddit a descargar (múltiple subredits separados con ","):'
+        }
+        QtControls.TextField {
+                    id: sub
+//                     width: 250
+                    QtLayouts.Layout.minimumWidth : 300
+//                      placeholderText: qsTr("Enter         name")
         }
         
-        QtControls.ComboBox {
+        QtLayouts.RowLayout{
+            QtLayouts.ColumnLayout{ 
+                QtControls.Label {
+                    QtLayouts.Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignBottom
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
+                    text: "Mostrar:"
+                }            
+                QtControls.ExclusiveGroup { id: mostrar }
+                QtControls.RadioButton {
+                    id: titulo_check
+                    text: "el título del post"
+                    checked: true
+                    exclusiveGroup: mostrar
+                }
+                QtControls.RadioButton {
+                    id: imagen_check
+                    text: "la imágen del post"
+                    exclusiveGroup: mostrar
+                }
+                QtControls.RadioButton {
+                    id: both_check
+                    text: "la imágen y el título del post"
+                    exclusiveGroup: mostrar
+                }
+            }
+            QtLayouts.ColumnLayout{
+                QtControls.Label {
+                    QtLayouts.Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignBottom
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
+                    text: "Images from:"
+                }
+             
+                QtControls.ExclusiveGroup { id: resolution }
+                QtControls.RadioButton {
+                    id: lowres_check
+                    text: "low resolution thumbnail"
+    //                 checked: true
+                    exclusiveGroup: resolution
+                }
+                QtControls.RadioButton {
+                    id: highres_check
+                    text: "high resolution thumbnail"
+                    checked: true
+                    exclusiveGroup: resolution
+                }
+                QtControls.RadioButton {
+                    id: urlres_check
+                    text: "Try to use url instead of thumbnail"
+                    exclusiveGroup: resolution
+                }
+            }
+        }
+        /*
+        QtControls.CheckBox {
+            id: trycheck
+            QtLayouts.Layout.fillWidth: true
+//             horizontalAlignment: Text.AlignLeft
+//             verticalAlignment: Text.AlignBottom
+//             Layout.minimumHeight : units.smallSpacing * 8
+            text: "Try to use url instead of thumbnail:"
+            checked: false
+        }*/
+        QtLayouts.RowLayout{
+            QtLayouts.Layout.alignment: Text.AlignCenter
+            QtControls.Label {
+                        QtLayouts.Layout.fillWidth: true
+//                         horizontalAlignment: Text.AlignCenter
+//                         horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignBottom
+//                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
+                        text: "Mostrar los mensajes de:"
+            }
+            
+            QtControls.ComboBox {
                         id: tiempo_cfg
                         property string fecha: ""
                         textRole: "label"
@@ -109,12 +169,12 @@ Item {
                                 'name': "all"
                             }
                         ]
-                         onCurrentIndexChanged: {
+                        onCurrentIndexChanged: {
 //                              print(model[currentIndex]["name"],cfg_tiempo_top);//cfg_dateFormat = model[currentIndex]["name"]
-                             fecha= model[currentIndex]["name"];
+                            fecha= model[currentIndex]["name"];
 //                              cfg_tiempo = model[currentIndex]["name"];
                         }
- 
+
 //                           Component.onCompleted: {
 //                               print(plasmoid.configuration.tiempo_top+".,.,.");
 // //                               tiempo_cfg.currentIndex = 4;//tiempo_cfg.find("week")
@@ -125,33 +185,24 @@ Item {
 // //                                 }
 // //                             }
 //                           }
-                    }
+                        }
+        }
                     
-                    
-        QtControls.Label {
-                    QtLayouts.Layout.fillWidth: true
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignBottom
-                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                    text: "Repetir cada (mins):"
+        QtLayouts.RowLayout{     
+            QtLayouts.Layout.alignment: Text.AlignCenter
+            QtControls.Label {
+                        QtLayouts.Layout.fillWidth: true
+//                         horizontalAlignment: Text.AlignCenter
+                        verticalAlignment: Text.AlignBottom
+//                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
+                        text: "Repetir cada (mins):"
+            }
+            
+            QtControls.SpinBox {
+                        id: spin
+            }
         }
-        
-        QtControls.SpinBox {
-                    id: spin
-         }
-         QtControls.Label {
-                    QtLayouts.Layout.fillWidth: true
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignBottom
-                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                    text: 'subreddit a descargar (múltiple subredits separados con ","):'
-        }
-        QtControls.TextField {
-                    id: sub
-//                     width: 250
-                    QtLayouts.Layout.minimumWidth : 300
-//                      placeholderText: qsTr("Enter         name")
-        }
+         
         QtControls.Label {//un separador
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
