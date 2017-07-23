@@ -4,7 +4,12 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4 as QtControls
 // import QtQuick.Controls 2.1
-
+//TODO opcion para apuntar a la pagina del link -> Casi, pero no es 100% seguro
+//Debe incluir que si esa falla, pase a tratar de mostrar el thumbnail, de forma habitual.
+//TODO Traducción
+//TODO opcion activar o desactivar cache?
+//TODO Abrir pagina/permalink en una ventana emergente (como plasmoid comics)
+//TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente.
 Item {
     id:root
 
@@ -19,8 +24,13 @@ Item {
     property string thumburl: ""
     property string cursubreddit: ""
     property real fraccion: 0
+    property bool thumb_Error: false
+//     property bool imagen_Error: false
     
-    
+//     signal imagen_Error()
+//     signal thumb_Error()
+//     onThumb_Error: {root.thumburl = root.imagenurl}
+//     onImagen_Error: {root.imagenurl = "sad.png"}
     
     Component.onCompleted: {
         plasmoid.backgroundHints = 0;
@@ -39,6 +49,18 @@ Item {
                 root.fraccion = 0.
         }
 //          Component.addEventListener('ConfigChanged', configChanged);	
+        plasmoid.setAction('reload', i18n('Reload'), 'system-reboot');
+        plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
+    }
+    function action_reload(){
+        time.restart()
+    }
+    function action_openexternall(){
+        if (plasmoid.configuration.middledirect){
+            Qt.openUrlExternally(root.realurl);print(plasmoid.configuration.middledirect+"**//**")
+        }else{
+            Qt.openUrlExternally(root.url);print(root.url+"..--..")
+        }
     }
     
     Connections {
@@ -96,8 +118,14 @@ Item {
         }
         onMiddledirectChanged: {}
     }
-   
-
+    
+//      Connections {
+//          target: thumb
+//          onStatusChanged: if (thumb.status == Image.Error) {imagenurl = "sad.png"}
+//      }
+       
+        onThumb_ErrorChanged: {if (root.thumb_Error) {root.thumburl = root.imagenurl}}
+//         onImagen_ErrorChanged: {if (root.imagen_Error) {root.imagenurl = "sad.png"}}
 
    
         QtControls.ScrollView{
@@ -122,6 +150,7 @@ Item {
 //                     height: tooltip.height
                     opacity: 0.2
                     source: imagenurl
+//                    onStatusChanged: {if (imagen.status == Image.Error) {root.imagen_Error = true;}}//que?
             }
 //             Column{
             PlasmaCore.ToolTipArea {
@@ -135,10 +164,14 @@ Item {
                         id: thumb
                         fillMode: Image.PreserveAspectFit
                         width: scrolly.width
-                         height: scrolly.height*fraccion//TODO
+                         height: scrolly.height*fraccion
                         opacity: 1.0
                         source: thumburl
-                        onStatusChanged: if (thumb.status == Image.Ready) {busy.visible = false}
+                        onStatusChanged: {
+                            if (thumb.status == Image.Ready || thumb.status == Image.Error) {busy.visible = false}
+                            if (thumb.status == Image.Error) {root.thumb_Error = true}
+                            print(thumb.status+"*-*-*",root.thumb_Error)
+                        }
                     }
                     Text {  
                         id: texty
@@ -159,15 +192,12 @@ Item {
 //                         var a = "a,b,,c,"
 //                         var b = a.split(",")
 //                         print("-.-"+b.filter(function lambda(x){ return x > ""}),a.length,b.filter(function lambda(x){ return x > ""}).length,typeof(a),typeof(b),b[2],b[2]>"");
-                        onTriggered: print(mouse.button);if (mouse.button == Qt.LeftButton) {
-                            time.restart()
-                        } else { 
-                            if (plasmoid.configuration.middledirect){
-                                Qt.openUrlExternally(root.realurl);print(plasmoid.configuration.middledirect+"**//**")
-                            }else{
-                                Qt.openUrlExternally(root.url);print(root.url+"..--..")
+                        onTriggered: {
+                            if (mouse.button == Qt.LeftButton) {
+                                time.restart()
+                            } else if (mouse.button == Qt.MidButton){ 
+                                action_openexternall()
                             }
-                            
                         }
                     }
                  }
@@ -183,6 +213,7 @@ Item {
 	  interval: plasmoid.configuration.intervalo * 60 * 1000
 	  onTriggered: {
           root.thumburl = ""
+          root.imagenurl = ""
           var arreddit = plasmoid.configuration.subreddit.split(",").filter(function lambda(x){ return x > ""})
           if (arreddit.length) {
 //             print(plasmoid.configuration.subreddit.split(",").filter(function lambda(x){ return x > ""}).length)
@@ -222,10 +253,24 @@ Item {
    
    function callback(x){
         if (x.responseText) {
-            var d = JSON.parse(x.responseText);
-            var N=Math.floor(Math.random()*100)
+          var d = JSON.parse(x.responseText);
+          if  (d["error"] == "404"){
+              root.isp = "Subreddit not found\n      -Showerthoughts.plasmoid"
+              tooltip.mainText = "Subreddit not found\n      -Showerthoughts.plasmoid"
+              root.thumburl = "sad.png"
+              busy.visible = false
+          }else if (d["error"] == "403"){
+              root.isp = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
+              tooltip.mainText = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
+              root.thumburl = "sad.png"
+              busy.visible = false
+          }else{
+            var N=Math.floor(Math.random()*d.data.children.length)
+            root.thumb_Error = false
+//             print (d["error"],d.data.children.length)
             root.thumburl = d["data"]["children"][N]["data"].thumbnail
-            if (root.thumburl == "self") { root.thumburl = root.imagenurl}
+//             if (root.thumb_Error) {root.thumburl = root.imagenurl}
+  //           if (root.thumburl == "self") { root.thumburl = root.imagenurl}
 //             root.isp = ""
             root.isp = d["data"]["children"][N]["data"].title
             root.isp += "\n      -/u/"+d["data"]["children"][N]["data"].author+"\n            /r/"+root.cursubreddit
@@ -234,7 +279,8 @@ Item {
             root.url = "https://www.reddit.com"+d["data"]["children"][N]["data"].permalink
             root.realurl = d["data"]["children"][N]["data"].url
 //             print(plasmoid.configuration.tit_o_img)
-            if (!plasmoid.configuration.tit_o_img ) { busy.visible = false}
+            if (!plasmoid.configuration.tit_o_img && !plasmoid.configuration.tit_e_img) { busy.visible = false}
+          }
         }else{
             root.isp = "Connection failed\n      -Showerthoughts.plasmoid"
             tooltip.mainText = "Connection failed\n      -Showerthoughts.plasmoid"
@@ -248,11 +294,14 @@ Item {
     function callback_back(x){
         if (x.responseText) {
           var d = JSON.parse(x.responseText);
+          root.imagen_Error = false
 	      root.imagenurl = d["data"].header_img
+// 	      if (root.imagen_Error) {root.imagenurl = "sad.png"}
 // 	      busy.visible = false
         }else{
 	      root.imagenurl = ""
         }
+//         onImagen_Error: {root.imagenurl = "sad.png"}
     }
   
 }
