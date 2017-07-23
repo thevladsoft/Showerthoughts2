@@ -19,12 +19,12 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Layouts 1.1
+// import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
-import QtQuick.Layouts 1.0 as QtLayouts
+// import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
+import QtQuick.Layouts 1.1 as QtLayouts
 import QtQuick.Controls 1.0 as QtControls
 
 Item {
@@ -35,7 +35,9 @@ Item {
     property alias cfg_intervalo: spin.value
     property alias cfg_subreddit: sub.text
     property alias cfg_tit_o_img: imagen_check.checked
+    property alias cfg_tit_e_img: both_check.checked
     property alias cfg_back_img: backcheck.checked
+    property alias cfg_middledirect: middledirectcheck.checked
     
     
     QtLayouts.ColumnLayout {
@@ -46,10 +48,10 @@ Item {
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
-                    Layout.minimumHeight : units.smallSpacing * 2
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
                     text: "Mostrar:"
         }
-        RowLayout{ 
+        QtLayouts.RowLayout{ 
             QtControls.ExclusiveGroup { id: tabPositionGroup }
             QtControls.RadioButton {
                 id: titulo_check
@@ -62,13 +64,18 @@ Item {
                 text: "la imágen del post"
                 exclusiveGroup: tabPositionGroup
             }
+            QtControls.RadioButton {
+                id: both_check
+                text: "la imágen y el título del post"
+                exclusiveGroup: tabPositionGroup
+            }
         }
         
         QtControls.Label {
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
-                    Layout.minimumHeight : units.smallSpacing * 8
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
                     text: "Mostrar los mensajes de:"
         }
         
@@ -125,7 +132,7 @@ Item {
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
-                    Layout.minimumHeight : units.smallSpacing * 8
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
                     text: "Repetir cada (mins):"
         }
         
@@ -136,22 +143,23 @@ Item {
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
-                    Layout.minimumHeight : units.smallSpacing * 8
-                    text: "subreddit a descargar:"
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
+                    text: 'subreddit a descargar (múltiple subredits separados con ","):'
         }
         QtControls.TextField {
                     id: sub
 //                     width: 250
-                    Layout.minimumWidth : 300
+                    QtLayouts.Layout.minimumWidth : 300
 //                      placeholderText: qsTr("Enter         name")
         }
         QtControls.Label {//un separador
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
-                    Layout.minimumHeight : units.smallSpacing * 2
+                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
                     text: ""
         }
+        
         QtControls.CheckBox {
             id: backcheck
             QtLayouts.Layout.fillWidth: true
@@ -161,9 +169,20 @@ Item {
             text: "Mostrar imágen del subreddit como fondo:"
             checked: true
         }
+        
+        QtControls.CheckBox {
+            id: middledirectcheck
+            QtLayouts.Layout.fillWidth: true
+//             horizontalAlignment: Text.AlignLeft
+//             verticalAlignment: Text.AlignBottom
+//             Layout.minimumHeight : units.smallSpacing * 8
+            text: "Siempre abrir directamente el link al que apunta el post:"
+            checked: false
+            tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
+        }
                     
     }
-    
+
     
     
 //     Component.onDestruction:{

@@ -7,4 +7,9 @@ ConfigModel {
          icon: "plasma"
          source: "configura.qml"
     }
+    ConfigCategory {
+         name: "Help"
+         icon: "help-about"
+         source: "help.qml"
+    }
 }

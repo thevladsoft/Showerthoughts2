@@ -26,9 +26,17 @@
         <label>Texto o Imagen</label>
         <default>false</default>
     </entry>
+    <entry name="tit_e_img" type="Boolean">
+        <label>Texto e Imagen</label>
+        <default>false</default>
+    </entry>
     <entry name="back_img" type="Boolean">
         <label>Imagen de fondo</label>
         <default>true</default>
+    </entry>
+    <entry name="middledirect" type="Boolean">
+        <label>Abre el link directo</label>
+        <default>false</default>
     </entry>
   </group>
 
