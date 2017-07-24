@@ -41,6 +41,7 @@ Item {
     property alias cfg_tryhigh: highres_check.checked
     property alias cfg_back_img: backcheck.checked
     property alias cfg_middledirect: middledirectcheck.checked
+    property alias cfg_middledialog: middledialogcheck.checked
     
     
     QtLayouts.ColumnLayout {
@@ -230,6 +231,15 @@ Item {
             text: "Siempre abrir directamente el link al que apunta el post:"
             checked: false
             tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
+        }
+        QtControls.CheckBox {
+            id: middledialogcheck
+            QtLayouts.Layout.fillWidth: true
+//             horizontalAlignment: Text.AlignLeft
+//             verticalAlignment: Text.AlignBottom
+//             Layout.minimumHeight : units.smallSpacing * 8
+            text: "Open link in a dialog window:"
+            checked: false
         }
                     
     }

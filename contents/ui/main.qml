@@ -3,17 +3,17 @@ import QtQuick 2.0;
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4 as QtControls
-// import QtWebKit 3.0
+
+import QtWebKit 3.0
+import QtQuick.Dialogs 1.2
 
 // import QtQuick.Controls 2.1
 //TODO Algunas imagenes fallan por no estar logeado. La solucion seria incluir usuario y contraseña en el encabesado
 //De momento no me interesa.
 
-//TODO opcion para apuntar a la pagina del link -> Casi, pero no es 100% seguro
-//TODO Traducción
-//TODO opcion activar o desactivar cache?
-//TODO Abrir pagina/permalink en una ventana emergente (como plasmoid comics)
-//TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente.
+//TODO Traducción y ayuda
+//TODO Abrir pagina/permalink en una ventana emergente (como plasmoid comics). más pruebas!
+//TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente(?).
 Item {
     id:root
 
@@ -38,6 +38,31 @@ Item {
 //     signal thumb_Error()
 //     onThumb_Error: {root.thumburl = root.imagenurl}
 //     onImagen_Error: {root.imagenurl = "sad.png"}
+Dialog{
+    id: dialogo
+    visible: false
+    width: 500
+    height: 500
+    standardButtons : StandardButton.Close|StandardButton.Reset
+    onReset: {
+        if(plasmoid.configuration.middledirect){
+            web.url= root.realurl
+        }else{
+            web.url= root.url
+        }
+    }
+    WebView {
+        id: web
+        anchors.fill: parent
+        url: ""
+        visible:true
+//         NavigationRequestAction: WebView.IgnoreRequest;
+    }
+    onVisibleChanged: {
+        if(!dialogo.visible){web.url=""}
+        
+    }
+}
     
     Component.onCompleted: {
         plasmoid.backgroundHints = 0;
@@ -55,9 +80,15 @@ Item {
                 texty.visible = true
                 root.fraccion = 0.
         }
+//         if(plasmoid.configuration.middledirect){
+//             web.url= root.realurl
+//         }else{
+//             web.url= root.url
+//         }
 //          Component.addEventListener('ConfigChanged', configChanged);	
         plasmoid.setAction('reload', i18n('Reload'), 'system-reboot');
         plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
+        plasmoid.setAction('opendialog', i18n('Open on a window'), 'system-run');
     }
     function action_reload(){
         time.restart()
@@ -67,6 +98,14 @@ Item {
             Qt.openUrlExternally(root.realurl);//print(plasmoid.configuration.middledirect+"**//**")
         }else{
             Qt.openUrlExternally(root.url);//print(root.url+"..--..")
+        }
+    }
+    function action_opendialog(){
+        dialogo.visible = true
+        if(plasmoid.configuration.middledirect){
+            web.url= root.realurl
+        }else{
+            web.url= root.url
         }
     }
     
@@ -152,7 +191,16 @@ Item {
                 imagen.visible = false
             }
         }
-        onMiddledirectChanged: {}
+        onMiddledirectChanged: {
+//             print(plasmoid.configuration.middledirect,root.realurl,root.url)
+//             if(plasmoid.configuration.middledirect){
+//                 web.url= root.realurl
+//             }else{
+//                 web.url= root.url
+//             }
+        }
+        onMiddledialogChanged: {
+        }
     }
     
 //      Connections {
@@ -190,6 +238,7 @@ Item {
             }
             Image{
                     id: imagen
+                    cache: false
                     fillMode: Image.PreserveAspectFit
                     width: scrolly.width
                     height: scrolly.height
@@ -208,6 +257,7 @@ Item {
                     id: col
                     Image{
                         id: thumb
+                        cache: false
                         fillMode: Image.PreserveAspectFit
                         width: scrolly.width
                          height: scrolly.height*fraccion
@@ -248,7 +298,12 @@ Item {
                             if (mouse.button == Qt.LeftButton) {
                                 time.restart()
                             } else if (mouse.button == Qt.MidButton){ 
-                                action_openexternall()
+//                                 action_openexternall()
+                                if (plasmoid.configuration.middledialog){
+                                    action_opendialog()
+                                }else{
+                                    action_openexternall()
+                                }
                             }
                         }
                     }
@@ -329,12 +384,14 @@ Item {
 //               root.thumburl = "sad.png"
               thumb.source = "sad.png"
               busy.visible = false
+              web.url= ""
           }else if (d["error"] == "403"){
               root.isp = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
               tooltip.mainText = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
 //               root.thumburl = "sad.png"
               thumb.source = "sad.png"
               busy.visible = false
+              web.url= ""
           }else{
             var N=Math.floor(Math.random()*d.data.children.length)
             root.firsttry = false
@@ -370,6 +427,11 @@ Item {
             }
 //             print(plasmoid.configuration.tit_o_img)
             if (!plasmoid.configuration.tit_o_img && !plasmoid.configuration.tit_e_img) { busy.visible = false}
+//             if(plasmoid.configuration.middledirect){
+//                 web.url= root.realurl
+//             }else{
+//                 web.url= root.url
+//             }
 //             print(root.thumburl,root.realurl,thumb.source,"**--**",N)
           }
         }else{
@@ -381,6 +443,7 @@ Item {
 //             root.thumburl = ""
             thumb.source = ""
             busy.visible = false
+            web.url= ""
         }
     }
     

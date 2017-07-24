@@ -55,6 +55,10 @@
         <label>Abre el link directo</label>
         <default>false</default>
     </entry>
+    <entry name="middledialog" type="Boolean">
+        <label>Opens link in a dialog window</label>
+        <default>false</default>
+    </entry>
   </group>
 
 </kcfg>
