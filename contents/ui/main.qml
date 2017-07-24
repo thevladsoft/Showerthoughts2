@@ -6,14 +6,16 @@ import QtQuick.Controls 1.4 as QtControls
 
 import QtWebKit 3.0
 import QtQuick.Dialogs 1.2
-
+// import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.1 as QtLayouts
 // import QtQuick.Controls 2.1
 //TODO Algunas imagenes fallan por no estar logeado. La solucion seria incluir usuario y contraseña en el encabesado
 //De momento no me interesa.
 
 //TODO Traducción y ayuda
-//TODO Abrir pagina/permalink en una ventana emergente (como plasmoid comics). más pruebas!
 //TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente(?).
+//TODO imagenes:no cargar en el background?(ya) Ir de mayor a menor resolucion en caso de fallos?animatedimage?
+//TODO cambiar entre top,new, etc?
 Item {
     id:root
 
@@ -38,31 +40,96 @@ Item {
 //     signal thumb_Error()
 //     onThumb_Error: {root.thumburl = root.imagenurl}
 //     onImagen_Error: {root.imagenurl = "sad.png"}
-Dialog{
-    id: dialogo
-    visible: false
-    width: 500
-    height: 500
-    standardButtons : StandardButton.Close|StandardButton.Reset
-    onReset: {
-        if(plasmoid.configuration.middledirect){
-            web.url= root.realurl
-        }else{
-            web.url= root.url
+// QtControls.ApplicationWindow {
+//     id: root2
+//     width: 300; height: 300
+//     visible: true
+// //     style: ApplicationWindowStyle {
+// //         background: null
+// //     }
+//     Text {
+//         anchors.centerIn: parent
+//         text: qsTr("Hello World.")
+//     }
+//     PlasmaComponents.Button {
+//         anchors.centerIn: parent
+//         text: qsTr("Click me")
+//         style: ButtonStyle {
+//         background: Rectangle {
+//             implicitWidth: 100
+//             implicitHeight: 25
+//             border.width: control.activeFocus ? 2 : 1
+//             border.color: "#888"
+//             radius: 4
+//             opacity: 0.2
+//             gradient: Gradient {
+//                 GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+//                 GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+//             }
+//         }
+//         }
+//     }
+// }
+    Dialog{
+        id: dialogo
+        visible: false
+        width: 800
+        height: 600
+        modality:  Qt.NonModal
+        title: root.isp
+        standardButtons : StandardButton.Close|StandardButton.Reset
+        onReset: {
+            if(plasmoid.configuration.middledirect){
+                web.url= root.realurl
+            }else{
+                web.url= root.url
+            }
+        }
+        QtLayouts.ColumnLayout{
+            QtControls.ScrollView{
+                id: webscrolly
+                width: dialogo.width-20
+                height: dialogo.height-45-progres.height
+    //             anchors.horizontalCenter: dialogo.horizontalCenter
+                anchors.top: dialogo.top+20
+                anchors.left: dialogo.left
+    //             anchors.topMargin: 0
+    //             anchors.bottomMargin: 55
+    //             anchors.leftMargin: 0
+    //             anchors.rightMargin: 5
+                contentItem :web
+                
+                WebView {
+                    id: web
+                    anchors.fill: parent
+                    url: ""
+                    visible:true
+                }
+            }
+            QtControls.ProgressBar {
+                    id: progres
+                    minimumValue: 0
+                    maximumValue: 100
+                    height: 5
+                    width: dialogo.width-20
+                    value: web.loadProgress
+                    anchors.top: webscrolly.bottom
+            }
+        }
+        
+        onVisibleChanged: {
+            if(!dialogo.visible){
+                web.url=""
+            }
+            else {
+                if(plasmoid.configuration.middledirect){
+                    web.url= root.realurl
+                }else{
+                    web.url= root.url
+                }
+            }
         }
     }
-    WebView {
-        id: web
-        anchors.fill: parent
-        url: ""
-        visible:true
-//         NavigationRequestAction: WebView.IgnoreRequest;
-    }
-    onVisibleChanged: {
-        if(!dialogo.visible){web.url=""}
-        
-    }
-}
     
     Component.onCompleted: {
         plasmoid.backgroundHints = 0;
@@ -80,13 +147,14 @@ Dialog{
                 texty.visible = true
                 root.fraccion = 0.
         }
+        if(thumb.visible){busy.visible = true;load_thumb()}
 //         if(plasmoid.configuration.middledirect){
 //             web.url= root.realurl
 //         }else{
 //             web.url= root.url
 //         }
 //          Component.addEventListener('ConfigChanged', configChanged);	
-        plasmoid.setAction('reload', i18n('Reload'), 'system-reboot');
+        plasmoid.setAction('reload', i18n('New post'), 'system-reboot');
         plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
         plasmoid.setAction('opendialog', i18n('Open on a window'), 'system-run');
     }
@@ -95,17 +163,24 @@ Dialog{
     }
     function action_openexternall(){
         if (plasmoid.configuration.middledirect){
-            Qt.openUrlExternally(root.realurl);//print(plasmoid.configuration.middledirect+"**//**")
+            Qt.openUrlExternally(root.realurl);
         }else{
-            Qt.openUrlExternally(root.url);//print(root.url+"..--..")
+            Qt.openUrlExternally(root.url);
         }
     }
     function action_opendialog(){
         dialogo.visible = true
-        if(plasmoid.configuration.middledirect){
-            web.url= root.realurl
+        
+    }
+    
+    function load_thumb(){
+        if (plasmoid.configuration.tryhigh){
+            thumb.source = root.thumbhighurl
+        }else if (plasmoid.configuration.trylow){
+            thumb.source = root.thumblowurl
         }else{
-            web.url= root.url
+            root.firsttry = true
+            thumb.source = root.realurl
         }
     }
     
@@ -120,8 +195,6 @@ Dialog{
         }
         onSubredditChanged: {
             time.restart();
-//             root.imagenurl = ""
-//             request('https://www.reddit.com/r/'+plasmoid.configuration.subreddit+'/about.json',callback_back);
         }
         onTit_o_imgChanged: {
 //             time.restart();
@@ -154,34 +227,36 @@ Dialog{
                 texty.visible = true
                 root.fraccion = 0.
             }
+//             if(thumb.visible){busy.visible = true;load_thumb()}
         }
         onTryurlChanged: {
-            busy.visible = true
-            if (plasmoid.configuration.tryurl){
-                root.firsttry = true;thumb.source = root.realurl
-            }
-            else{
-                thumb.source = root.thumburl
-            }
+            if(thumb.visible){busy.visible = true;load_thumb()}
+//             if (plasmoid.configuration.tryurl){
+//                 root.firsttry = true;thumb.source = root.realurl
+//             }
+//             else{
+//                 thumb.source = root.thumburl
+//             }
         }
         
         onTryhighChanged: {
-            busy.visible = true
-            if (plasmoid.configuration.tryhigh){//intenta usa un thumbnail de mayor calidad
-                root.thumburl = root.thumbhighurl
-            }else{
-                root.thumburl = root.thumblowurl
-            }
-            thumb.source = root.thumburl
+            if(thumb.visible){busy.visible = true;load_thumb()}
+//             if (plasmoid.configuration.tryhigh){//intenta usar un thumbnail de mayor calidad
+//                 root.thumburl = root.thumbhighurl
+//             }else{
+//                 root.thumburl = root.thumblowurl
+//             }
+//             thumb.source = root.thumburl
         }
         onTrylowChanged: {
-            busy.visible = true
-            if (plasmoid.configuration.tryhigh){//intenta usa un thumbnail de mayor calidad
-                root.thumburl = root.thumbhighurl
-            }else{
-                root.thumburl = root.thumblowurl
-            }
-            thumb.source = root.thumburl
+            
+            if(thumb.visible){busy.visible = true;load_thumb()}
+//             if (plasmoid.configuration.tryhigh){//intenta usar un thumbnail de mayor calidad
+//                 root.thumburl = root.thumbhighurl
+//             }else{
+//                 root.thumburl = root.thumblowurl
+//             }
+//             thumb.source = root.thumburl
         }
         
         onBack_imgChanged: {
@@ -203,24 +278,6 @@ Dialog{
         }
     }
     
-//      Connections {
-//          target: thumb
-//          onStatusChanged: if (thumb.status == Image.Error) {imagenurl = "sad.png"}
-//      }
-       
-//         onThumb_ErrorChanged: {
-// //             root.firsttry
-//             if (root.thumb_Error) {
-// //                 if (firsttry){
-//                     
-// //                 root.thumburl = root.imagenurl;
-//                 thumb.source = root.imagenurl;
-// //                 root.thumb_Error = false
-//             }
-//             
-//         }
-//         onImagen_ErrorChanged: {if (root.imagen_Error) {root.imagenurl = "sad.png"}}
-
    
         QtControls.ScrollView{
             id: scrolly
@@ -263,16 +320,19 @@ Dialog{
                          height: scrolly.height*fraccion
                         opacity: 1.0
 //                         source: root.thumburl
+                        onVisibleChanged:{
+                            if(thumb.visible){busy.visible = true;load_thumb()}
+                        }
                         onStatusChanged: {
-                            if (thumb.status == Image.Error || thumb.status == Image.Null) {//print(thumb.status,root.firsttry)
-                                if (root.firsttry){
-                                    root.firsttry = false
-                                    thumb.source = root.thumburl
-                                    
-                                }else{
-                                    thumb.source = root.imagenurl;/*root.thumb_Error = true;*/
-                                }
-                            }
+//                             if (thumb.status == Image.Error || thumb.status == Image.Null) {//print(thumb.status,root.firsttry)
+//                                 if (root.firsttry){
+//                                     root.firsttry = false
+//                                     thumb.source = root.thumburl
+//                                     
+//                                 }else{
+//                                     thumb.source = root.imagenurl;/*root.thumb_Error = true;*/
+//                                 }
+//                             }
                             if (thumb.status == Image.Ready || thumb.status == Image.Error || thumb.status == Image.Null) {busy.visible = false}
                             
                             //print(thumb.status+"*-*-*",root.thumb_Error)
@@ -295,6 +355,7 @@ Dialog{
                     acceptedButtons: Qt.LeftButton | Qt.MiddleButton
                     onClicked: {
                         onTriggered: {
+                            print(thumb.source)
                             if (mouse.button == Qt.LeftButton) {
                                 time.restart()
                             } else if (mouse.button == Qt.MidButton){ 
@@ -370,7 +431,7 @@ Dialog{
             }
        });
        xhr.open('GET', url, true);
-//        xhr.setRequestHeader('User-Agent','/u/thevladsoft');
+       xhr.setRequestHeader('User-Agent','Showerthoughts.plasmoid');
        XMLHttpRequest.timeout = 15000
        xhr.send();
    }
@@ -382,23 +443,24 @@ Dialog{
               root.isp = "Subreddit not found\n      -Showerthoughts.plasmoid"
               tooltip.mainText = "Subreddit not found\n      -Showerthoughts.plasmoid"
 //               root.thumburl = "sad.png"
-              thumb.source = "sad.png"
+//               thumb.source = "sad.png"
+              root.thumbhighurl = "sad.png"
+              root.thumblowurl = "sad.png"
+              root.realurl = ""
               busy.visible = false
               web.url= ""
           }else if (d["error"] == "403"){
               root.isp = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
               tooltip.mainText = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
-//               root.thumburl = "sad.png"
-              thumb.source = "sad.png"
+//               thumb.source = "sad.png"
+              root.thumbhighurl = "sad.png"
+              root.thumblowurl = "sad.png"
+              root.realurl = ""
               busy.visible = false
               web.url= ""
           }else{
             var N=Math.floor(Math.random()*d.data.children.length)
             root.firsttry = false
-//             root.thumb_Error = false
-//             print (d["error"],d.data.children.length)
-//              print("**--**"+d.data.children[N].data.thumbnail+d["data"]["children"][N]["data"]["preview"]["images"][0]["source"].url,N,d.data.children.length)
-//             print(d["data"]["children"][N]["data"].thumbnail)
             if (d["data"]["children"][N]["data"]["preview"]){
                 root.thumbhighurl = d["data"]["children"][N]["data"]["preview"]["images"][0]["source"].url
             }else{
@@ -406,11 +468,11 @@ Dialog{
             }
             root.thumblowurl = d["data"]["children"][N]["data"].thumbnail
             
-            if (plasmoid.configuration.tryhigh){//intenta usa un thumbnail de mayor calidad
-                root.thumburl = root.thumbhighurl
-            }else{
-                root.thumburl = root.thumblowurl
-            }
+//             if (plasmoid.configuration.tryhigh){//intenta usa un thumbnail de mayor calidad
+//                 root.thumburl = root.thumbhighurl
+//             }else{
+//                 root.thumburl = root.thumblowurl
+//             }
             
             root.isp = d["data"]["children"][N]["data"].title
             root.isp += "\n      -/u/"+d["data"]["children"][N]["data"].author+"\n            /r/"+root.cursubreddit
@@ -418,21 +480,24 @@ Dialog{
             tooltip.subText = "      /u/"+d["data"]["children"][N]["data"].author+"\n            /r/"+root.cursubreddit
             root.url = "https://www.reddit.com"+d["data"]["children"][N]["data"].permalink
             root.realurl = d["data"]["children"][N]["data"].url
-            if (plasmoid.configuration.tryurl){
-                root.firsttry = true;thumb.source = root.realurl/*root.thumburl = d["data"]["children"][N]["data"].url;*/
-            }
-//             else if (d["data"]["children"][N]["data"].thumbnail == "self") { root.thumburl = root.imagenurl}
-            else{
-                thumb.source = root.thumburl/*root.thumburl = d["data"]["children"][N]["data"].thumbnail*/
-            }
-//             print(plasmoid.configuration.tit_o_img)
-            if (!plasmoid.configuration.tit_o_img && !plasmoid.configuration.tit_e_img) { busy.visible = false}
-//             if(plasmoid.configuration.middledirect){
-//                 web.url= root.realurl
-//             }else{
-//                 web.url= root.url
+//             if (plasmoid.configuration.tryurl){
+// //                 root.firsttry = true;thumb.source = root.realurl
 //             }
-//             print(root.thumburl,root.realurl,thumb.source,"**--**",N)
+//             else{
+// //                 thumb.source = root.thumburl
+//             }
+            if (!plasmoid.configuration.tit_o_img && !plasmoid.configuration.tit_e_img) { busy.visible = false}
+            if(thumb.visible)load_thumb()
+            if(!dialogo.visible){
+                web.url=""
+            }
+            else {
+                if(plasmoid.configuration.middledirect){
+                    web.url= root.realurl
+                }else{
+                    web.url= root.url
+                }
+            }
           }
         }else{
             root.isp = "Connection failed\n      -Showerthoughts.plasmoid"
@@ -459,22 +524,6 @@ Dialog{
         }
 //         onImagen_Error: {root.imagenurl = "sad.png"}
     }
-    
-//     PlasmaCore.DataSource {//ejecutable generico
-//         id: executable
-//         engine: "executable"
-//         connectedSources: []
-//         onNewData: {
-//             disconnectSource(sourceName);
-//             print(data["stdout"]+"!!!")
-//             var h = JSON.parse(data["stdout"]);
-//             print(h["data"]["children"][5]["data"].thumbnail)
-//             print(h["data"]["children"][5]["data"]["preview"]["images"][0]["source"].url)
-//         }// cmd finished
-//         function exec(cmd) {
-//             connectSource('wget -qO - "https://www.reddit.com/r/news/top.json?sort=top&t=week&limit=100"');
-//         }
-//     }
   
 }
 

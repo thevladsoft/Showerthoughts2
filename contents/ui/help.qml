@@ -33,6 +33,7 @@ Item {
    
     
     QtLayouts.ColumnLayout {
+        id: helptext
         spacing: units.smallSpacing * 2
 //         anchors.left: parent.left
 //         anchors.horizontalCenter: parent.horizontalCenter
