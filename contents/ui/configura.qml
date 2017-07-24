@@ -129,7 +129,7 @@ Item {
             checked: false
         }*/
         QtLayouts.RowLayout{
-            QtLayouts.Layout.alignment: Text.AlignCenter
+//             QtLayouts.Layout.alignment: Text.AlignCenter
             QtControls.Label {
                         QtLayouts.Layout.fillWidth: true
 //                         horizontalAlignment: Text.AlignCenter
@@ -189,7 +189,7 @@ Item {
         }
                     
         QtLayouts.RowLayout{     
-            QtLayouts.Layout.alignment: Text.AlignCenter
+//             QtLayouts.Layout.alignment: Text.AlignCenter
             QtControls.Label {
                         QtLayouts.Layout.fillWidth: true
 //                         horizontalAlignment: Text.AlignCenter

@@ -3,8 +3,11 @@ import QtQuick 2.0;
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4 as QtControls
+// import QtWebKit 3.0
+
 // import QtQuick.Controls 2.1
-//TODO Algunos subreddits fallan usando XMLHttpRequest, pero no con curl, que tendría que llamarlo externamente.
+//TODO Algunas imagenes fallan por no estar logeado. La solucion seria incluir usuario y contraseña en el encabesado
+//De momento no me interesa.
 
 //TODO opcion para apuntar a la pagina del link -> Casi, pero no es 100% seguro
 //TODO Traducción
@@ -241,9 +244,6 @@ Item {
                     anchors.fill: col
                     acceptedButtons: Qt.LeftButton | Qt.MiddleButton
                     onClicked: {
-//                         var a = "a,b,,c,"
-//                         var b = a.split(",")
-//                         print("-.-"+b.filter(function lambda(x){ return x > ""}),a.length,b.filter(function lambda(x){ return x > ""}).length,typeof(a),typeof(b),b[2],b[2]>"");
                         onTriggered: {
                             if (mouse.button == Qt.LeftButton) {
                                 time.restart()
@@ -276,9 +276,6 @@ Item {
           }
           request('http://www.reddit.com/r/'+root.cursubreddit+'/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',callback);
           request('https://www.reddit.com/r/'+root.cursubreddit+'/about.json',callback_back);
-//            texty.anchors.top = scrolly.top
-//           print(texty.y+"-.-");
-//           print('https://www.reddit.com/r/showerthoughts/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',plasmoid.configuration.intervalo,interval);
       }
     }
 
@@ -297,11 +294,12 @@ Item {
          root.isp = "";
 	     tooltip.mainText = "Loading...";
 	     tooltip.subText = "";
-         thumb.source = ""
+//          thumb.source = ""
 	  }
          });
        xhr.open('GET', url, true);
        xhr.setRequestHeader('User-Agent','/u/thevladsoft');
+//        xhr.setRequestHeader('User-Agent','Mozilla/5.0 (X11; Linux i686 on x86_64; rv:54.0) Gecko/20100101 Firefox/54.0');
 //        xhr.setRequestHeader('Accept','application/json');
        XMLHttpRequest.timeout = 15000
        xhr.send();
@@ -398,6 +396,22 @@ Item {
         }
 //         onImagen_Error: {root.imagenurl = "sad.png"}
     }
+    
+//     PlasmaCore.DataSource {//ejecutable generico
+//         id: executable
+//         engine: "executable"
+//         connectedSources: []
+//         onNewData: {
+//             disconnectSource(sourceName);
+//             print(data["stdout"]+"!!!")
+//             var h = JSON.parse(data["stdout"]);
+//             print(h["data"]["children"][5]["data"].thumbnail)
+//             print(h["data"]["children"][5]["data"]["preview"]["images"][0]["source"].url)
+//         }// cmd finished
+//         function exec(cmd) {
+//             connectSource('wget -qO - "https://www.reddit.com/r/news/top.json?sort=top&t=week&limit=100"');
+//         }
+//     }
   
 }
 
