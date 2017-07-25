@@ -492,6 +492,7 @@ Item {
               root.thumbhighurl = "sad.png"
               root.thumblowurl = "sad.png"
               root.realurl = ""
+              root.url = ""
               busy.visible = false
               web.url= ""
           }else if (d["error"] == "403"){
@@ -501,6 +502,7 @@ Item {
               root.thumbhighurl = "sad.png"
               root.thumblowurl = "sad.png"
               root.realurl = ""
+              root.url = ""
               busy.visible = false
               web.url= ""
           }else{
