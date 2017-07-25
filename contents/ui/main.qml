@@ -487,7 +487,7 @@ Item {
    function callback(x){
         if (x.responseText) {
           var d = JSON.parse(x.responseText);
-          if  (d["error"] == "404"){
+          if  (d["error"] == "404" || d["data"]["children"] == ""){
               root.isp = "Subreddit not found\n      -Showerthoughts.plasmoid"
               tooltip.mainText = "Subreddit not found\n      -Showerthoughts.plasmoid"
 //               root.thumburl = "sad.png"
