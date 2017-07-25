@@ -14,7 +14,6 @@ import QtQuick.Layouts 1.1 as QtLayouts
 
 //TODO Traducción y ayuda
 //TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente(?).
-//TODO imagenes:no cargar en el background?(ya) Ir de mayor a menor resolucion en caso de fallos?animatedimage?
 //TODO cambiar entre top,new, etc?
 Item {
     id:root
@@ -32,7 +31,7 @@ Item {
     property string thumbhighurl: ""
     property string cursubreddit: ""
     property real fraccion: 0
-    property bool firsttry: false
+//     property bool firsttry: false
 //     property bool thumb_Error: false
 //     property bool imagen_Error: false
     
@@ -138,7 +137,7 @@ Item {
                 thumb.visible = true
                 texty.visible = false
                 root.fraccion = 1.
-        }else if (plasmoid.configuration.tit_o_img ){
+        }else if (plasmoid.configuration.tit_e_img ){
                 thumb.visible = true
                 texty.visible = true
                 root.fraccion = 0.7
@@ -148,6 +147,12 @@ Item {
                 root.fraccion = 0.
         }
         if(thumb.visible){busy.visible = true;load_thumb()}
+//         print("***-**"+plasmoid.configuration.back_img+imagen.visible+plasmoid.configuration.tit_o_img)
+        if (plasmoid.configuration.back_img) {
+            imagen.source = root.imagenurl
+        }else{
+            imagen.source = ""
+        }
 //         if(plasmoid.configuration.middledirect){
 //             web.url= root.realurl
 //         }else{
@@ -157,6 +162,7 @@ Item {
         plasmoid.setAction('reload', i18n('New post'), 'system-reboot');
         plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
         plasmoid.setAction('opendialog', i18n('Open on a window'), 'system-run');
+        
     }
     function action_reload(){
         time.restart()
@@ -175,11 +181,19 @@ Item {
     
     function load_thumb(){
         if (plasmoid.configuration.tryhigh){
-            thumb.source = root.thumbhighurl
+            if(root.thumbhighurl && root.thumbhighurl != "self"){
+                thumb.source = root.thumbhighurl
+            }else{
+                thumb.source = root.imagenurl
+            }
         }else if (plasmoid.configuration.trylow){
-            thumb.source = root.thumblowurl
+            if(root.thumbhighurl && root.thumbhighurl != "self"){
+                thumb.source = root.thumblowurl
+            }else{
+                thumb.source = root.imagenurl
+            }
         }else{
-            root.firsttry = true
+//             root.firsttry = true
             thumb.source = root.realurl
         }
     }
@@ -262,8 +276,10 @@ Item {
         onBack_imgChanged: {
             if (plasmoid.configuration.back_img ) {
                 imagen.visible = true
+                imagen.source = root.imagenurl
             }else{
                 imagen.visible = false
+                imagen.source = ""
             }
         }
         onMiddledirectChanged: {
@@ -275,6 +291,14 @@ Item {
 //             }
         }
         onMiddledialogChanged: {
+        }
+    }
+    
+    onImagenurlChanged:{
+        if (plasmoid.configuration.back_img && imagen.visible) {
+            imagen.source = root.imagenurl
+        }else{
+            imagen.source = ""
         }
     }
     
@@ -301,7 +325,7 @@ Item {
                     height: scrolly.height
 //                     height: tooltip.height
                     opacity: 0.2
-                    source: root.imagenurl
+//                     source: root.imagenurl
 //                    onStatusChanged: {if (imagen.status == Image.Error) {root.imagen_Error = true;}}//que?
             }
 //             Column{
@@ -312,8 +336,10 @@ Item {
                  mainText: ""  
                  Column{
                     id: col
-                    Image{
+                    AnimatedImage{
                         id: thumb
+//                         paused: true
+                        playing: false
                         cache: false
                         fillMode: Image.PreserveAspectFit
                         width: scrolly.width
@@ -333,9 +359,28 @@ Item {
 //                                     thumb.source = root.imagenurl;/*root.thumb_Error = true;*/
 //                                 }
 //                             }
-                            if (thumb.status == Image.Ready || thumb.status == Image.Error || thumb.status == Image.Null) {busy.visible = false}
-                            
-                            //print(thumb.status+"*-*-*",root.thumb_Error)
+                            if (thumb.status == Image.Ready || thumb.status == Image.Error || thumb.status == Image.Null) {
+                                if(thumb.status == Image.Error){
+                                    if(thumb.source == root.realurl){//print("a----")
+                                        if(root.thumbhighurl){
+                                            thumb.source = root.thumbhighurl
+                                        }else{
+                                            thumb.source = root.imagenurl
+                                        }
+                                    }else if(thumb.source == root.thumbhighurl){//print("b-----"+root.thumblowurl)
+                                        if(root.thumblowurl){
+                                            thumb.source = root.thumblowurl
+                                        }else{
+                                            thumb.source = root.imagenurl
+                                        }
+                                    }else{print("c")
+                                        thumb.source = root.imagenurl
+                                    }
+                                }
+                                busy.visible = false
+                            }
+//                             playing = true
+//                             paused = false
                         }
                     }
                     Text {  
@@ -460,7 +505,7 @@ Item {
               web.url= ""
           }else{
             var N=Math.floor(Math.random()*d.data.children.length)
-            root.firsttry = false
+//             root.firsttry = false
             if (d["data"]["children"][N]["data"]["preview"]){
                 root.thumbhighurl = d["data"]["children"][N]["data"]["preview"]["images"][0]["source"].url
             }else{
