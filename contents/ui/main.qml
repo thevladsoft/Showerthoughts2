@@ -12,9 +12,8 @@ import QtQuick.Layouts 1.1 as QtLayouts
 //TODO Algunas imagenes fallan por no estar logeado. La solucion seria incluir usuario y contraseña en el encabesado
 //De momento no me interesa.
 
-//TODO Traducción y ayuda
+//TODO ayuda
 //TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente(?).
-//TODO cambiar entre top,new, etc?
 Item {
     id:root
 
@@ -205,6 +204,9 @@ Item {
             time.restart();
         }
         onTiempo_topChanged: {
+            time.restart();
+        }
+        onReally_topChanged: {
             time.restart();
         }
         onSubredditChanged: {
@@ -435,7 +437,8 @@ Item {
           }else{ 
               root.cursubreddit = "showerthoughts"
           }
-          request('http://www.reddit.com/r/'+root.cursubreddit+'/top.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',callback);
+          print(plasmoid.configuration.really_top,'http://www.reddit.com/r/'+root.cursubreddit+'/'+plasmoid.configuration.really_top+'.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100')
+          request('http://www.reddit.com/r/'+root.cursubreddit+'/'+plasmoid.configuration.really_top+'.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',callback);
           request('https://www.reddit.com/r/'+root.cursubreddit+'/about.json',callback_back);
       }
     }

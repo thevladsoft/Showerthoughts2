@@ -32,6 +32,7 @@ Item {
     
     property alias cfg_tiempo_top: tiempo_cfg.fecha
     property alias cfg_index_top: tiempo_cfg.currentIndex
+    property alias cfg_really_top: really_cfg.donde
     property alias cfg_intervalo: spin.value
     property alias cfg_subreddit: sub.text
     property alias cfg_tit_o_img: imagen_check.checked
@@ -54,7 +55,7 @@ Item {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
                     QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                    text: 'subreddit a descargar (múltiple subredits separados con ","):'
+                    text: 'subreddit to download (multiple subredits separated with , ):'
         }
         QtControls.TextField {
                     id: sub
@@ -70,23 +71,23 @@ Item {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
                     QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
-                    text: "Mostrar:"
+                    text: "Show:"
                 }            
                 QtControls.ExclusiveGroup { id: mostrar }
                 QtControls.RadioButton {
                     id: titulo_check
-                    text: "el título del post"
+                    text: "the post title"
                     checked: true
                     exclusiveGroup: mostrar
                 }
                 QtControls.RadioButton {
                     id: imagen_check
-                    text: "la imágen del post"
+                    text: "the post image"
                     exclusiveGroup: mostrar
                 }
                 QtControls.RadioButton {
                     id: both_check
-                    text: "la imágen y el título del post"
+                    text: "both"
                     exclusiveGroup: mostrar
                 }
             }
@@ -114,7 +115,7 @@ Item {
                 }
                 QtControls.RadioButton {
                     id: urlres_check
-                    text: "Try to use url instead of thumbnail"
+                    text: "use the post's url instead of a thumbnail"
                     exclusiveGroup: resolution
                 }
             }
@@ -137,7 +138,58 @@ Item {
 //                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignBottom
 //                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                        text: "Mostrar los mensajes de:"
+                        text: "Show the"
+            }
+            
+            QtControls.ComboBox {
+                        id: really_cfg
+                        property string donde: ""
+                        textRole: "label"
+                        model: [
+                            {
+                                'label': "top",
+                                'name': "top"
+                            },
+                            {
+                                'label': "new",
+                                'name': "new"
+                            },
+                            {
+                                'label': "hot",
+                                'name': "hot"
+                            },
+                            {
+                                'label': "rising",
+                                'name': "rising"
+                            },
+                            {
+                                'label': "controversial",
+                                'name': "controversial"
+                            }
+                        ]
+                        onCurrentIndexChanged: {
+//                              print(model[currentIndex]["name"],cfg_tiempo_top);//cfg_dateFormat = model[currentIndex]["name"]
+                            donde= model[currentIndex]["name"];
+//                              cfg_tiempo = model[currentIndex]["name"];
+                            if(model[currentIndex]["name"] == "top" || model[currentIndex]["name"] == "controversial" ){
+                                tiempo_cfg.visible = true
+                                postde.text= "posts of:"
+                            }else{
+                                tiempo_cfg.visible = false
+                                postde.text= "posts"
+                            }
+//                             print(currentText,textRole,modelcurrentIndex]["name"])
+                        }
+                        Component.onCompleted:{currentIndex = find(plasmoid.configuration.really_top)}
+            }
+            QtControls.Label {
+                        id:postde
+                        QtLayouts.Layout.fillWidth: true
+//                         horizontalAlignment: Text.AlignCenter
+//                         horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignBottom
+//                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
+                        text: "posts of:"
             }
             
             QtControls.ComboBox {
@@ -146,27 +198,27 @@ Item {
                         textRole: "label"
                         model: [
                             {
-                                'label': "la última hora",
+                                'label': "the last hour",
                                 'name': "hour"
                             },
                             {
-                                'label': "el día",
+                                'label': "the day",
                                 'name': "day"
                             },
                             {
-                                'label': "la semana",
+                                'label': "the week",
                                 'name': "week"
                             },
                             {
-                                'label': "el mes",
+                                'label': "the mont",
                                 'name': "month"
                             },
                             {
-                                'label': "el año",
+                                'label': "the year",
                                 'name': "year"
                             },
                             {
-                                'label': "siempre",
+                                'label': "allways",
                                 'name': "all"
                             }
                         ]
@@ -196,7 +248,7 @@ Item {
 //                         horizontalAlignment: Text.AlignCenter
                         verticalAlignment: Text.AlignBottom
 //                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                        text: "Repetir cada (mins):"
+                        text: "Repeat every (minutes):"
             }
             
             QtControls.SpinBox {
@@ -218,7 +270,7 @@ Item {
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Mostrar imágen del subreddit como fondo:"
+            text: "Show the subreddit's thumbnail as background:"
             checked: true
         }
         
@@ -228,7 +280,7 @@ Item {
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Siempre abrir directamente el link al que apunta el post:"
+            text: "Open directly the link pointed by the post, instead of the reddit one."
             checked: false
             tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
         }
