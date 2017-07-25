@@ -8,12 +8,13 @@ import QtWebKit 3.0
 import QtQuick.Dialogs 1.2
 // import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1 as QtLayouts
+import QtQuick.Controls.Styles 1.4
 // import QtQuick.Controls 2.1
 //TODO Algunas imagenes fallan por no estar logeado. La solucion seria incluir usuario y contraseña en el encabesado
 //De momento no me interesa.
 
 //TODO ayuda
-//TODO Opciones con boton derecho para abrir externamente (ya) para recargar (ya) y para abrir la ventana emergente(?).
+
 Item {
     id:root
 
@@ -84,12 +85,36 @@ Item {
             }
         }
         QtLayouts.ColumnLayout{
+            QtControls.ProgressBar {
+                    id: progres
+                    minimumValue: 0
+                    maximumValue: 100
+                    height: 5
+                    width: webscrolly.width
+                    value: web.loadProgress
+                    anchors.top: dialogo.top
+                    style: ProgressBarStyle {
+                                background: Rectangle {
+                                    radius: 100
+                                    color: "#ececec"
+                                    border.color: "lightgray"
+                                    border.width: 1
+                                    implicitWidth: 200
+                                    implicitHeight: 5
+                                }
+                                progress: Rectangle {
+                                    color: "#4da4ac"
+                                    border.color: "lightgray"
+                                    radius: 100
+                                }
+                           }
+            }
             QtControls.ScrollView{
                 id: webscrolly
                 width: dialogo.width-20
-                height: dialogo.height-45-progres.height
+                height: dialogo.height-progres.height-55
     //             anchors.horizontalCenter: dialogo.horizontalCenter
-                anchors.top: dialogo.top+20
+                anchors.top: progres.bottom
                 anchors.left: dialogo.left
     //             anchors.topMargin: 0
     //             anchors.bottomMargin: 55
@@ -104,15 +129,7 @@ Item {
                     visible:true
                 }
             }
-            QtControls.ProgressBar {
-                    id: progres
-                    minimumValue: 0
-                    maximumValue: 100
-                    height: 5
-                    width: dialogo.width-20
-                    value: web.loadProgress
-                    anchors.top: webscrolly.bottom
-            }
+            
         }
         
         onVisibleChanged: {

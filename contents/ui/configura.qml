@@ -290,7 +290,7 @@ Item {
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Open link in a dialog window:"
+            text: "Open link on a dialog window:"
             checked: false
         }
                     
