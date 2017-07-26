@@ -176,8 +176,12 @@ Item {
 //         }
 //          Component.addEventListener('ConfigChanged', configChanged);	
         plasmoid.setAction('reload', i18n('New post'), 'system-reboot');
-        plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
-        plasmoid.setAction('opendialog', i18n('Open on a window'), 'system-run');
+//         plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
+        plasmoid.setAction('openexternallurl', i18n('Open reddit link on external application'), 'system-run');
+        plasmoid.setAction('openexternallrealurl', i18n('Open linked url on external application'), 'system-run');
+//         plasmoid.setAction('opendialog', i18n('Open on a window'), 'system-run');
+        plasmoid.setAction('opendialogurl', i18n('Open reddit link on a window'), 'system-run');
+        plasmoid.setAction('opendialogrealurl', i18n('Open linked url on a window'), 'system-run');
         
     }
     function action_reload(){
@@ -190,9 +194,23 @@ Item {
             Qt.openUrlExternally(root.url);
         }
     }
+    function action_openexternallurl(){
+        Qt.openUrlExternally(root.url);
+    }
+    function action_openexternallrealurl(){
+        Qt.openUrlExternally(root.realurl);
+    }
+    
     function action_opendialog(){
         dialogo.visible = true
-        
+    }
+    function action_opendialogurl(){
+        dialogo.visible = true
+        web.url= root.url
+    }
+    function action_opendialogrealurl(){
+        dialogo.visible = true
+        web.url= root.realurl
     }
     
     function load_thumb(){

@@ -55,7 +55,7 @@ Item {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignBottom
                     QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
-                    text: 'subreddit to download (multiple subredits separated with , ):'
+                    text: 'subreddit to download (separate multiple subredits  with , ):'
         }
         QtControls.TextField {
                     id: sub
@@ -115,7 +115,7 @@ Item {
                 }
                 QtControls.RadioButton {
                     id: urlres_check
-                    text: "use the post's url instead of a thumbnail"
+                    text: "use the linked url instead of a thumbnail"
                     exclusiveGroup: resolution
                 }
             }
@@ -280,7 +280,7 @@ Item {
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Open directly the link pointed by the post, instead of the reddit one."
+            text: "Open the link pointed by the post directly, instead of the reddit one."
             checked: false
             tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
         }
