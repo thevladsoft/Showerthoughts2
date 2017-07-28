@@ -80,6 +80,11 @@
         <label>Load with left click</label>
         <default>true</default>
     </entry>
+    
+    <entry name="transback" type="Bool">
+        <label>Transparent background</label>
+        <default>true</default>
+    </entry>
   </group>
 
 </kcfg>

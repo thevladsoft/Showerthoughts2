@@ -148,7 +148,7 @@ Item {
     }
     
     Component.onCompleted: {
-        plasmoid.backgroundHints = 0;
+        plasmoid.backgroundHints = plasmoid.configuration.transback ? 0 : 1;
 //         request('https://www.reddit.com/r/'+plasmoid.configuration.subreddit+'/about.json',callback_back);
         if(plasmoid.configuration.tit_o_img ){
                 thumb.visible = true
@@ -321,6 +321,9 @@ Item {
                 imagen.visible = false
                 imagen.source = ""
             }
+        }
+        onTransbackChanged: {
+            plasmoid.backgroundHints = plasmoid.configuration.transback ? 0 : 1;
         }
         onMiddledirectChanged: {
 //             print(plasmoid.configuration.middledirect,root.realurl,root.url)

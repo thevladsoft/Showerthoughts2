@@ -31,6 +31,7 @@ Item {
     id: rootconf
     
     property alias cfg_back_img: backcheck.checked
+    property alias cfg_transback: transbackcheck.checked
     property alias cfg_middledirect: middledirectcheck.checked
     property alias cfg_middledialog: middledialogcheck.checked
     property alias cfg_middlemouse: middlemousecheck.checked
@@ -43,12 +44,23 @@ Item {
 //         anchors.horizontalCenter: parent.horizontalCenter
 
                 ///////////////////////////////////////////////////////// 
-        QtControls.Label {//un separador
-                    QtLayouts.Layout.fillWidth: true
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignBottom
-                    QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
-                    text: ""
+//         QtControls.Label {//un separador
+//                     QtLayouts.Layout.fillWidth: true
+//                     horizontalAlignment: Text.AlignLeft
+//                     verticalAlignment: Text.AlignBottom
+//                     QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
+//                     text: ""
+//         }
+//         
+
+        QtControls.CheckBox {
+            id: transbackcheck
+            QtLayouts.Layout.fillWidth: true
+//             horizontalAlignment: Text.AlignLeft
+//             verticalAlignment: Text.AlignBottom
+//             Layout.minimumHeight : units.smallSpacing * 8
+            text: "Transparent background"
+//             checked: true
         }
         
         QtControls.CheckBox {
