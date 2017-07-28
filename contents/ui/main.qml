@@ -134,6 +134,7 @@ Item {
         
         onVisibleChanged: {
             if(!dialogo.visible){
+                web.stop()
                 web.url=""
             }
             else {
@@ -177,10 +178,10 @@ Item {
 //          Component.addEventListener('ConfigChanged', configChanged);	
         plasmoid.setAction('reload', i18n('New post'), 'system-reboot');
 //         plasmoid.setAction('openexternall', i18n('Open on external application'), 'system-run');
-        plasmoid.setAction('openexternallurl', i18n('Open reddit link on external application'), 'system-run');
+        plasmoid.setAction('openexternallurl', i18n('Open reddit post on external application'), 'system-run');
         plasmoid.setAction('openexternallrealurl', i18n('Open linked url on external application'), 'system-run');
 //         plasmoid.setAction('opendialog', i18n('Open on a window'), 'system-run');
-        plasmoid.setAction('opendialogurl', i18n('Open reddit link on a window'), 'system-run');
+        plasmoid.setAction('opendialogurl', i18n('Open reddit post on a window'), 'system-run');
         plasmoid.setAction('opendialogrealurl', i18n('Open linked url on a window'), 'system-run');
         
     }
@@ -246,6 +247,8 @@ Item {
         }
         onSubredditChanged: {
             time.restart();
+        }
+        onTit_no_imgChanged: {
         }
         onTit_o_imgChanged: {
 //             time.restart();
@@ -329,6 +332,15 @@ Item {
         }
         onMiddledialogChanged: {
         }
+        
+        onMiddlemouseChanged: {
+        }
+        onLeftmouseChanged: {
+        }
+        onNsfwChanged: {
+            time.restart()
+        }
+        
     }
     
     onImagenurlChanged:{
@@ -430,6 +442,7 @@ Item {
                         width: tooltip.width
                         height: tooltip.height*(1.-fraccion)
                         text: root.isp 
+//                         rotation: 30
                     }
                  }
                  MouseArea {
@@ -438,9 +451,9 @@ Item {
                     onClicked: {
                         onTriggered: {
                             print(thumb.source)
-                            if (mouse.button == Qt.LeftButton) {
+                            if (mouse.button == Qt.LeftButton && plasmoid.configuration.leftmouse) {
                                 time.restart()
-                            } else if (mouse.button == Qt.MidButton){ 
+                            } else if (mouse.button == Qt.MidButton && plasmoid.configuration.middlemouse){ 
 //                                 action_openexternall()
                                 if (plasmoid.configuration.middledialog){
                                     action_opendialog()
@@ -456,7 +469,7 @@ Item {
     
 
     
-        Timer {
+    Timer {
 	  id: time
 	  running: true
 	  triggeredOnStart: true
@@ -472,7 +485,7 @@ Item {
           }else{ 
               root.cursubreddit = "showerthoughts"
           }
-          print(plasmoid.configuration.really_top,'http://www.reddit.com/r/'+root.cursubreddit+'/'+plasmoid.configuration.really_top+'.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100')
+//           print(plasmoid.configuration.really_top,'http://www.reddit.com/r/'+root.cursubreddit+'/'+plasmoid.configuration.really_top+'.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100')
           request('http://www.reddit.com/r/'+root.cursubreddit+'/'+plasmoid.configuration.really_top+'.json?sort=top&t='+plasmoid.configuration.tiempo_top+'&limit=100',callback);
           request('https://www.reddit.com/r/'+root.cursubreddit+'/about.json',callback_back);
       }
@@ -497,7 +510,6 @@ Item {
 	  }
          });
        xhr.open('GET', url, true);
-       xhr.setRequestHeader('User-Agent','/u/thevladsoft');
 //        xhr.setRequestHeader('User-Agent','Mozilla/5.0 (X11; Linux i686 on x86_64; rv:54.0) Gecko/20100101 Firefox/54.0');
 //        xhr.setRequestHeader('Accept','application/json');
        XMLHttpRequest.timeout = 15000
@@ -544,7 +556,13 @@ Item {
               busy.visible = false
               web.url= ""
           }else{
+              if (!plasmoid.configuration.nsfw){
+                for (var i=0;i<d.data.children.length;i++){
+                    if (d.data.children[i]["data"].over_18){delete d.data.children[i]}
+                }
+              }
             var N=Math.floor(Math.random()*d.data.children.length)
+//             print(d.data.children.length,d.data.children[8]["data"].over_18,d["data"]["children"][8]["data"].title,d.data.children.length)
 //             root.firsttry = false
             if (d["data"]["children"][N]["data"]["preview"]){
                 root.thumbhighurl = d["data"]["children"][N]["data"]["preview"]["images"][0]["source"].url

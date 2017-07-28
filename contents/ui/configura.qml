@@ -35,6 +35,7 @@ Item {
     property alias cfg_really_top: really_cfg.donde
     property alias cfg_intervalo: spin.value
     property alias cfg_subreddit: sub.text
+    property alias cfg_tit_no_img: titulo_check.checked
     property alias cfg_tit_o_img: imagen_check.checked
     property alias cfg_tit_e_img: both_check.checked
     property alias cfg_tryurl: urlres_check.checked
@@ -43,7 +44,9 @@ Item {
     property alias cfg_back_img: backcheck.checked
     property alias cfg_middledirect: middledirectcheck.checked
     property alias cfg_middledialog: middledialogcheck.checked
-    
+    property alias cfg_middlemouse: middlemousecheck.checked
+    property alias cfg_leftmouse: leftmousecheck.checked
+    property alias cfg_nsfw: nsfwcheck.checked
     
     QtLayouts.ColumnLayout {
         spacing: units.smallSpacing * 2
@@ -60,7 +63,7 @@ Item {
         QtControls.TextField {
                     id: sub
 //                     width: 250
-                    QtLayouts.Layout.minimumWidth : 300
+                    QtLayouts.Layout.minimumWidth : 400
 //                      placeholderText: qsTr("Enter         name")
         }
         
@@ -77,17 +80,19 @@ Item {
                 QtControls.RadioButton {
                     id: titulo_check
                     text: "the post title"
-                    checked: true
+//                      checked: plasmoid.configuration.tit_no_img
                     exclusiveGroup: mostrar
                 }
                 QtControls.RadioButton {
                     id: imagen_check
                     text: "the post image"
+//                     checked: plasmoid.configuration.tit_o_img
                     exclusiveGroup: mostrar
                 }
                 QtControls.RadioButton {
                     id: both_check
                     text: "both"
+//                     checked: plasmoid.configuration.tit_e_img
                     exclusiveGroup: mostrar
                 }
             }
@@ -110,7 +115,7 @@ Item {
                 QtControls.RadioButton {
                     id: highres_check
                     text: "high resolution thumbnail"
-                    checked: true
+//                     checked: true
                     exclusiveGroup: resolution
                 }
                 QtControls.RadioButton {
@@ -255,7 +260,7 @@ Item {
                         id: spin
             }
         }
-         
+        ///////////////////////////////////////////////////////// 
         QtControls.Label {//un separador
                     QtLayouts.Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
@@ -270,29 +275,64 @@ Item {
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Show the subreddit's thumbnail as background:"
-            checked: true
+            text: "Show the subreddit's thumbnail as background"
+//             checked: true
         }
         
         QtControls.CheckBox {
-            id: middledirectcheck
+            id: leftmousecheck
             QtLayouts.Layout.fillWidth: true
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Open the link pointed by the post directly, instead of the reddit one."
-            checked: false
-            tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
+            text: "Left click loads a new post"
+//             checked: true
         }
+        
         QtControls.CheckBox {
-            id: middledialogcheck
+            id: middlemousecheck
             QtLayouts.Layout.fillWidth: true
 //             horizontalAlignment: Text.AlignLeft
 //             verticalAlignment: Text.AlignBottom
 //             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Open link on a dialog window:"
-            checked: false
+            text: "Middle click opens post"
+//             checked: true
         }
+        QtLayouts.RowLayout{
+            Item{width: 20}
+            Column{
+                QtControls.CheckBox {
+                    id: middledirectcheck
+                    QtLayouts.Layout.fillWidth: true
+        //             horizontalAlignment: Text.AlignLeft
+        //             verticalAlignment: Text.AlignBottom
+        //             Layout.minimumHeight : units.smallSpacing * 8
+                    text: "Open the link pointed by the post directly, instead of the reddit one"
+                    enabled: middlemousecheck.checked
+        //             checked: false
+        //             tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
+                }
+                QtControls.CheckBox {
+                    id: middledialogcheck
+                    QtLayouts.Layout.fillWidth: true
+        //             horizontalAlignment: Text.AlignLeft
+        //             verticalAlignment: Text.AlignBottom
+        //             Layout.minimumHeight : units.smallSpacing * 8
+                    text: "Open link on a dialog window"
+                    enabled: middlemousecheck.checked
+        //             checked: false
+                }
+            }
+        }
+        
+        QtControls.CheckBox {
+                    id: nsfwcheck
+                    QtLayouts.Layout.fillWidth: true
+        //             horizontalAlignment: Text.AlignLeft
+        //             verticalAlignment: Text.AlignBottom
+        //             Layout.minimumHeight : units.smallSpacing * 8
+                    text: "Allow posts marked as nsfw (for adults)"
+                }
                     
     }
 

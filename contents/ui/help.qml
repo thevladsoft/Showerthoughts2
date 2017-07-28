@@ -35,16 +35,34 @@ Item {
     QtLayouts.ColumnLayout {
         id: helptext
         spacing: units.smallSpacing * 2
+        anchors.fill: parent
 //         anchors.left: parent.left
 //         anchors.horizontalCenter: parent.horizontalCenter
-        QtControls.Label {
-//                     QtLayouts.Layout.fillWidth: true
-//                     horizontalAlignment: Text.AlignLeft
-//                     verticalAlignment: Text.AlignBottom
-//                     Layout.minimumHeight : units.smallSpacing * 2
-                    text: "Mostrar:"
+        QtControls.ScrollView{
+            anchors.fill: parent
+            QtControls.Label {
+    //                     QtLayouts.Layout.fillWidth: true
+    //                     horizontalAlignment: Text.AlignLeft
+    //                     verticalAlignment: Text.AlignBottom
+    //                     Layout.minimumHeight : units.smallSpacing * 2
+                        text: "Mostrar:fj afjkas hf dfjsd 
+
+sdfkjskdfnskdf
+sdfjsdfk sd  sdjf sdf sknf sdfnsd
+
+sdgsdfh sdhf sdhf sdfksjdf
+
+sdf sjdk fh op4it k3495 umsdvm,nt 
+
+sgjrjg
+
+
+
+
+sdfk sjd."
+            }
+                
         }
-               
     }
 
 

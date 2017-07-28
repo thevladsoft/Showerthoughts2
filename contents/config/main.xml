@@ -20,7 +20,7 @@
         <default>top</default>
     </entry>
     
-    <entry name="intervalo" type="int">
+    <entry name="intervalo" type="Int">
         <label>Cuando repite</label>
         <default>15</default>
     </entry>
@@ -29,40 +29,56 @@
         <label>Subreddit</label>
         <default>showerthoughts</default>
     </entry>
-    
-    <entry name="tit_o_img" type="Boolean">
+    <entry name="tit_no_img" type="Bool">
+        <label>Texto no Imagen</label>
+        <default>true</default>
+    </entry>
+    <entry name="tit_o_img" type="Bool">
         <label>Texto o Imagen</label>
         <default>false</default>
     </entry>
-    <entry name="tit_e_img" type="Boolean">
+    <entry name="tit_e_img" type="Bool">
         <label>Texto e Imagen</label>
         <default>false</default>
     </entry>
-    <entry name="trylow" type="Boolean">
+    <entry name="trylow" type="Bool">
         <label>Intenta usar thumbnail 1 como imagen</label>
         <default>false</default>
     </entry>  
-    <entry name="tryhigh" type="Boolean">
+    <entry name="tryhigh" type="Bool">
         <label>Intenta usar thumbnail 2 como imagen</label>
         <default>true</default>
     </entry>  
-    <entry name="tryurl" type="Boolean">
+    <entry name="tryurl" type="Bool">
         <label>Intenta usar la url como imagen</label>
         <default>false</default>
     </entry>   
     
-    <entry name="back_img" type="Boolean">
+    <entry name="back_img" type="Bool">
         <label>Imagen de fondo</label>
         <default>true</default>
     </entry>
     
-    <entry name="middledirect" type="Boolean">
+    <entry name="middledirect" type="Bool">
         <label>Abre el link directo</label>
         <default>false</default>
     </entry>
-    <entry name="middledialog" type="Boolean">
+    <entry name="middledialog" type="Bool">
         <label>Opens link in a dialog window</label>
         <default>false</default>
+    </entry>
+    <entry name="middlemouse" type="Bool">
+        <label>Open with middle click</label>
+        <default>true</default>
+    </entry>
+    <entry name="leftmouse" type="Bool">
+        <label>Load with left click</label>
+        <default>true</default>
+    </entry>
+    
+    <entry name="nsfw" type="Bool">
+        <label>Load with left click</label>
+        <default>true</default>
     </entry>
   </group>
 
