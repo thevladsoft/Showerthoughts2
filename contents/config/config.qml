@@ -8,6 +8,11 @@ ConfigModel {
          source: "configura.qml"
     }
     ConfigCategory {
+         name: "Advanced"
+         icon: "system-run"
+         source: "configurb.qml"
+    }
+    ConfigCategory {
          name: "Help"
          icon: "help-about"
          source: "help.qml"
