@@ -1,9 +1,7 @@
 import QtQuick 2.0
-// import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-// import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
 import QtQuick.Layouts 1.1 as QtLayouts
 import QtQuick.Controls 1.0 as QtControls
 
@@ -21,17 +19,9 @@ Item {
     property alias cfg_tryurl: urlres_check.checked
     property alias cfg_trylow: lowres_check.checked
     property alias cfg_tryhigh: highres_check.checked
-//     property alias cfg_back_img: backcheck.checked
-//     property alias cfg_middledirect: middledirectcheck.checked
-//     property alias cfg_middledialog: middledialogcheck.checked
-//     property alias cfg_middlemouse: middlemousecheck.checked
-//     property alias cfg_leftmouse: leftmousecheck.checked
-//     property alias cfg_nsfw: nsfwcheck.checked
     
     QtLayouts.ColumnLayout {
         spacing: units.smallSpacing * 4
-//         anchors.left: parent.left
-//         anchors.horizontalCenter: parent.horizontalCenter
 
         QtControls.Label {
                     QtLayouts.Layout.fillWidth: true
@@ -42,9 +32,7 @@ Item {
         }
         QtControls.TextField {
                     id: sub
-//                     width: 250
                     QtLayouts.Layout.minimumWidth : 400
-//                      placeholderText: qsTr("Enter         name")
         }
         
         QtLayouts.RowLayout{
@@ -60,19 +48,16 @@ Item {
                 QtControls.RadioButton {
                     id: titulo_check
                     text: "the post title"
-//                      checked: plasmoid.configuration.tit_no_img
                     exclusiveGroup: mostrar
                 }
                 QtControls.RadioButton {
                     id: imagen_check
                     text: "the post image"
-//                     checked: plasmoid.configuration.tit_o_img
                     exclusiveGroup: mostrar
                 }
                 QtControls.RadioButton {
                     id: both_check
                     text: "both"
-//                     checked: plasmoid.configuration.tit_e_img
                     exclusiveGroup: mostrar
                 }
             }
@@ -89,13 +74,11 @@ Item {
                 QtControls.RadioButton {
                     id: lowres_check
                     text: "low resolution thumbnail"
-    //                 checked: true
                     exclusiveGroup: resolution
                 }
                 QtControls.RadioButton {
                     id: highres_check
                     text: "high resolution thumbnail"
-//                     checked: true
                     exclusiveGroup: resolution
                 }
                 QtControls.RadioButton {
@@ -105,24 +88,11 @@ Item {
                 }
             }
         }
-        /*
-        QtControls.CheckBox {
-            id: trycheck
-            QtLayouts.Layout.fillWidth: true
-//             horizontalAlignment: Text.AlignLeft
-//             verticalAlignment: Text.AlignBottom
-//             Layout.minimumHeight : units.smallSpacing * 8
-            text: "Try to use url instead of thumbnail:"
-            checked: false
-        }*/
+        
         QtLayouts.RowLayout{
-//             QtLayouts.Layout.alignment: Text.AlignCenter
             QtControls.Label {
                         QtLayouts.Layout.fillWidth: true
-//                         horizontalAlignment: Text.AlignCenter
-//                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignBottom
-//                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
                         text: "Show the"
             }
             
@@ -153,9 +123,7 @@ Item {
                             }
                         ]
                         onCurrentIndexChanged: {
-//                              print(model[currentIndex]["name"],cfg_tiempo_top);//cfg_dateFormat = model[currentIndex]["name"]
                             donde= model[currentIndex]["name"];
-//                              cfg_tiempo = model[currentIndex]["name"];
                             if(model[currentIndex]["name"] == "top" || model[currentIndex]["name"] == "controversial" ){
                                 tiempo_cfg.visible = true
                                 postde.text= "posts of:"
@@ -163,17 +131,13 @@ Item {
                                 tiempo_cfg.visible = false
                                 postde.text= "posts"
                             }
-//                             print(currentText,textRole,modelcurrentIndex]["name"])
                         }
                         Component.onCompleted:{currentIndex = find(plasmoid.configuration.really_top)}
             }
             QtControls.Label {
                         id:postde
                         QtLayouts.Layout.fillWidth: true
-//                         horizontalAlignment: Text.AlignCenter
-//                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignBottom
-//                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
                         text: "posts of:"
             }
             
@@ -208,31 +172,15 @@ Item {
                             }
                         ]
                         onCurrentIndexChanged: {
-//                              print(model[currentIndex]["name"],cfg_tiempo_top);//cfg_dateFormat = model[currentIndex]["name"]
                             fecha= model[currentIndex]["name"];
-//                              cfg_tiempo = model[currentIndex]["name"];
                         }
-
-//                           Component.onCompleted: {
-//                               print(plasmoid.configuration.tiempo_top+".,.,.");
-// //                               tiempo_cfg.currentIndex = 4;//tiempo_cfg.find("week")
-// //                              print(model[currentIndex]["name"]);
-// //                             for (var i = 0; i < model.length; i++) {
-// //                                 if (model[i]["name"] == plasmoid.configuration.dateFormat) {
-// //                                     dateFormat.currentIndex = i;
-// //                                 }
-// //                             }
-//                           }
-                        }
+            }
         }
                     
         QtLayouts.RowLayout{     
-//             QtLayouts.Layout.alignment: Text.AlignCenter
             QtControls.Label {
                         QtLayouts.Layout.fillWidth: true
-//                         horizontalAlignment: Text.AlignCenter
                         verticalAlignment: Text.AlignBottom
-//                         QtLayouts.Layout.minimumHeight : units.smallSpacing * 8
                         text: "Repeat every (minutes):"
             }
             
@@ -240,88 +188,8 @@ Item {
                         id: spin
             }
         }
-        ///////////////////////////////////////////////////////// 
-//         QtControls.Label {//un separador
-//                     QtLayouts.Layout.fillWidth: true
-//                     horizontalAlignment: Text.AlignLeft
-//                     verticalAlignment: Text.AlignBottom
-//                     QtLayouts.Layout.minimumHeight : units.smallSpacing * 2
-//                     text: ""
-//         }
-//         
-//         QtControls.CheckBox {
-//             id: backcheck
-//             QtLayouts.Layout.fillWidth: true
-// //             horizontalAlignment: Text.AlignLeft
-// //             verticalAlignment: Text.AlignBottom
-// //             Layout.minimumHeight : units.smallSpacing * 8
-//             text: "Show the subreddit's thumbnail as background"
-// //             checked: true
-//         }
-//         
-//         QtControls.CheckBox {
-//             id: leftmousecheck
-//             QtLayouts.Layout.fillWidth: true
-// //             horizontalAlignment: Text.AlignLeft
-// //             verticalAlignment: Text.AlignBottom
-// //             Layout.minimumHeight : units.smallSpacing * 8
-//             text: "Left click loads a new post"
-// //             checked: true
-//         }
-//         
-//         QtControls.CheckBox {
-//             id: middlemousecheck
-//             QtLayouts.Layout.fillWidth: true
-// //             horizontalAlignment: Text.AlignLeft
-// //             verticalAlignment: Text.AlignBottom
-// //             Layout.minimumHeight : units.smallSpacing * 8
-//             text: "Middle click opens post"
-// //             checked: true
-//         }
-//         QtLayouts.RowLayout{
-//             Item{width: 20}
-//             Column{
-//                 QtControls.CheckBox {
-//                     id: middledirectcheck
-//                     QtLayouts.Layout.fillWidth: true
-//         //             horizontalAlignment: Text.AlignLeft
-//         //             verticalAlignment: Text.AlignBottom
-//         //             Layout.minimumHeight : units.smallSpacing * 8
-//                     text: "Open the link pointed by the post directly, instead of the reddit one"
-//                     enabled: middlemousecheck.checked
-//         //             checked: false
-//         //             tooltip: "Activado: abrirá la dirección a la que apunte el post, la cual puede ser o no de reddit. \nDesactivado: botón central abrirá la página del post en reddit."
-//                 }
-//                 QtControls.CheckBox {
-//                     id: middledialogcheck
-//                     QtLayouts.Layout.fillWidth: true
-//         //             horizontalAlignment: Text.AlignLeft
-//         //             verticalAlignment: Text.AlignBottom
-//         //             Layout.minimumHeight : units.smallSpacing * 8
-//                     text: "Open link on a dialog window"
-//                     enabled: middlemousecheck.checked
-//         //             checked: false
-//                 }
-//             }
-//         }
-//         
-//         QtControls.CheckBox {
-//                     id: nsfwcheck
-//                     QtLayouts.Layout.fillWidth: true
-//         //             horizontalAlignment: Text.AlignLeft
-//         //             verticalAlignment: Text.AlignBottom
-//         //             Layout.minimumHeight : units.smallSpacing * 8
-//                     text: "Allow posts marked as nsfw (for adults)"
-//                 }
-                    
+                   
     }
-
-    
-    
-//     Component.onDestruction:{
-// //         root.time.restart();
-//         print("--..--");
-//     }
-    
+ 
 }
 
