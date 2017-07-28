@@ -13,7 +13,7 @@ ConfigModel {
          source: "configurb.qml"
     }
     ConfigCategory {
-         name: "Help"
+         name: "Info"
          icon: "help-about"
          source: "help.qml"
     }
