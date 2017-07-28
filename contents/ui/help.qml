@@ -59,7 +59,7 @@ Right now it doesn't play animated images, though it should be able to show some
 <br><br>
 <b>Authentication:</b>
 <br>
-Right now the plasmoid doesn't know how to log in. This means that some subreddits are inaccesible. Also, some public subreddits apparently will show thumbnails to registered users only.
+Right now the plasmoid doesn't know how to log in. This means that some subreddits are inaccessible. Also, some public subreddits apparently will show thumbnails to registered users only.
 <br><br>
 <b>Multireddits:</b><br> There is no multireddit support, and there is no intention to add it. Sorry.
 "
