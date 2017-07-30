@@ -443,8 +443,8 @@ Item {
           if  (d["error"] == "404" || d["data"]["children"] == ""){
               root.isp = "Subreddit not found\n      -Showerthoughts.plasmoid"
               tooltip.mainText = "Subreddit not found\n      -Showerthoughts.plasmoid"
-              root.thumbhighurl = "sad.png"
-              root.thumblowurl = "sad.png"
+              root.thumbhighurl = "./sad.png"
+              root.thumblowurl = "./sad.png"
               root.realurl = ""
               root.url = ""
               busy.visible = false
@@ -452,8 +452,8 @@ Item {
           }else if (d["error"] == "403"){
               root.isp = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
               tooltip.mainText = "Subreddit is private, and I don't know how to enter :(\n      -Showerthoughts.plasmoid"
-              root.thumbhighurl = "sad.png"
-              root.thumblowurl = "sad.png"
+              root.thumbhighurl = "./sad.png"
+              root.thumblowurl = "./sad.png"
               root.realurl = ""
               root.url = ""
               busy.visible = false
@@ -495,9 +495,11 @@ Item {
             root.isp = "Connection failed\n      -Showerthoughts.plasmoid"
             tooltip.mainText = "Connection failed\n      -Showerthoughts.plasmoid"
             tooltip.subText = "";
-            root.url = ""
+            root.thumbhighurl = "./sad.png"
+            root.thumblowurl = "./sad.png"
+            if(thumb.visible)load_thumb()
             root.realurl = ""
-            thumb.source = ""
+            root.url = ""
             busy.visible = false
             web.url= ""
         }
