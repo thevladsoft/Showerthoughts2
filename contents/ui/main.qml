@@ -21,7 +21,7 @@ import QtQuick 2.0;
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4 as QtControls
-
+import org.kde.plasma.plasmoid 2.0
 import QtWebKit 3.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1 as QtLayouts
@@ -43,6 +43,8 @@ Item {
     property string thumbhighurl: ""
     property string cursubreddit: ""
     property real fraccion: 0
+    
+    Plasmoid.compactRepresentation: CompactRepresentation {}
 
     Dialog{
         id: dialogo
@@ -324,9 +326,12 @@ Item {
                          height: scrolly.height*fraccion
                         opacity: 1.0
                         onVisibleChanged:{
-                            if(thumb.visible){busy.visible = true;load_thumb()}
+                            if(thumb.visible){/*busy.visible = true;*/load_thumb()}
                         }
                         onStatusChanged: {
+                            if (thumb.status == Image.Loading){
+                                busy.visible = true
+                            }
                             if (thumb.status == Image.Ready || thumb.status == Image.Error || thumb.status == Image.Null) {
                                 if(thumb.status == Image.Error){
                                     if(thumb.source == root.realurl){
