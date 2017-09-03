@@ -85,6 +85,14 @@
         <label>Transparent background</label>
         <default>true</default>
     </entry>
+    <entry name="cleaner" type="Bool">
+        <label>Clear cache</label>
+        <default>true</default>
+    </entry>
+    <entry name="cleanersize" type="int">
+        <label>Cache size before cleaner</label>
+        <default>20</default>
+    </entry>
   </group>
 
 </kcfg>

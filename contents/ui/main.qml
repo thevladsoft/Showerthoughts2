@@ -411,6 +411,8 @@ Item {
     function request(url, callback) {
        var xhr = new XMLHttpRequest();
        
+       if (plasmoid.configuration.cleaner) {clearcache.exec(plasmoid.configuration.cleanersize);}
+       
        xhr.onreadystatechange = (function f() {
 	   if (xhr.readyState == 4) { callback(xhr);/*print("####"+xhr.status)*/}
 	   else{
@@ -517,6 +519,18 @@ Item {
         }else{
 	      root.imagenurl = ""
         }
+    }
+    
+    PlasmaCore.DataSource {
+        id: clearcache
+        engine: "executable"
+        connectedSources: []
+        onNewData: {
+            disconnectSource(sourceName);}
+        function exec(sizemb) {
+            connectSource("[ $(du -sm $(kf5-config --path cache)/kio_http |cut -f1) -gt "+sizemb+" ] && $(kf5-config --path lib)/libexec/kf5/kio_http_cache_cleaner --clear-all");
+        }
+        
     }
   
 }

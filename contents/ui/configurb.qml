@@ -15,6 +15,8 @@ Item {
     property alias cfg_middlemouse: middlemousecheck.checked
     property alias cfg_leftmouse: leftmousecheck.checked
     property alias cfg_nsfw: nsfwcheck.checked
+    property alias cfg_cleaner: cleanercheck.checked
+    property alias cfg_cleanersize: cleanerspin.value
     
     QtLayouts.ColumnLayout {
         spacing: units.smallSpacing * 4
@@ -65,6 +67,28 @@ Item {
                     QtLayouts.Layout.fillWidth: true
                     text: "Allow posts marked as nsfw (for adults)"
                 }
+                
+        QtLayouts.RowLayout{
+            Item{width: 20}        
+//             Column{
+                QtControls.CheckBox {
+                        id: cleanercheck
+                        QtLayouts.Layout.fillWidth: true
+                        text: "Erase disk cache if larger than:  "
+                }
+                QtControls.SpinBox {
+                        id: cleanerspin
+                        minimumValue: 5
+                        enabled: cleanercheck.checked
+                }
+                QtControls.Label {
+                        QtLayouts.Layout.fillWidth: true
+                        verticalAlignment: Text.AlignBottom
+                        text: "mb"
+                        enabled: cleanercheck.checked
+                }
+//             }
+        }
                     
     }
 }
