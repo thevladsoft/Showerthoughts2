@@ -4,6 +4,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Layouts 1.1 as QtLayouts
 import QtQuick.Controls 1.0 as QtControls
+import QtQuick.Dialogs 1.0
 
 Item {
     id: rootconf
@@ -18,6 +19,28 @@ Item {
     property alias cfg_cleaner: cleanercheck.checked
     property alias cfg_cleanersize: cleanerspin.value
     
+     property alias cfg_colortext: _textcolor.text
+     property alias cfg_colorshadow: _shadowcolor.text
+    
+    ColorDialog {
+            id: colorDialog
+            title: "Please choose a color"
+            //En el orden de los cuatros botones
+            property int boton
+            onAccepted: {
+                switch(boton){
+                    case 0:
+                        _textcolor.text = colorDialog.color
+                        break
+                    case 1:
+                        _shadowcolor.text = colorDialog.color
+                        break
+                }
+            }
+    }
+    
+    
+    
     QtLayouts.ColumnLayout {
         spacing: units.smallSpacing * 4
 
@@ -25,6 +48,36 @@ Item {
             id: transbackcheck
             QtLayouts.Layout.fillWidth: true
             text: "Transparent background"
+        }
+        
+        QtLayouts.RowLayout{
+            QtControls.Button {
+                text: "Text color"
+                onClicked: {colorDialog.boton = 0;colorDialog.color = _textcolor.text;colorDialog.visible = true;}
+            }
+            QtControls.TextField {
+                id: _textcolor
+                PlasmaCore.ToolTipArea{
+                    width: 100
+                    height: 100
+                    mainText: "You can write 'transparent' as color"
+                }
+            }
+        }
+        QtLayouts.RowLayout{
+            QtControls.Button {
+                text: "Text shadow color"
+                onClicked: {colorDialog.boton = 1;colorDialog.color = _shadowcolor.text;colorDialog.visible = true;}
+            }
+            
+            QtControls.TextField {
+                id: _shadowcolor
+                PlasmaCore.ToolTipArea{
+                    width: 100
+                    height: 100
+                    mainText: "You can write 'transparent' as color"
+                }
+            }
         }
         
         QtControls.CheckBox {

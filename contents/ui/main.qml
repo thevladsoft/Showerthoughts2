@@ -357,8 +357,8 @@ Item {
                     Text {  
                         id: texty
                         style: Text.Outline
-                        styleColor: "black"
-                        color: "white"
+                        styleColor: plasmoid.configuration.colorshadow//"black"
+                        color: plasmoid.configuration.colortext//"white"
                         wrapMode : Text.WordWrap
                         width: tooltip.width
                         height: tooltip.height*(1.-fraccion)

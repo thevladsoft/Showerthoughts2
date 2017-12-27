@@ -93,6 +93,15 @@
         <label>Cache size before cleaner</label>
         <default>20</default>
     </entry>
+    
+    <entry name="colortext" type="String">
+        <label>colortext</label>
+        <default>white</default>
+    </entry>
+    <entry name="colorshadow" type="String">
+        <label>shadowcolor</label>
+        <default>black</default>
+    </entry>
   </group>
 
 </kcfg>
