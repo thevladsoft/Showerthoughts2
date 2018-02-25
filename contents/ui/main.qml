@@ -179,18 +179,18 @@ Item {
     function load_thumb(){
         if (plasmoid.configuration.tryhigh){
             if(root.thumbhighurl && root.thumbhighurl != "self"){
-                thumb.source = root.thumbhighurl
+                thumb.source = root.thumbhighurl.replace("&amp;","&").replace("amp;","")
             }else{
-                thumb.source = root.imagenurl
+                thumb.source = root.imagenurl.replace("&amp;","&").replace("amp;","")
             }
         }else if (plasmoid.configuration.trylow){
-            if(root.thumbhighurl && root.thumbhighurl != "self"){
-                thumb.source = root.thumblowurl
+            if(root.thumblowurl && root.thumblowurl != "self"){
+                thumb.source = root.thumblowurl.replace("&amp;","&").replace("amp;","")
             }else{
-                thumb.source = root.imagenurl
+                thumb.source = root.imagenurl.replace("&amp;","&").replace("amp;","")
             }
         }else{
-            thumb.source = root.realurl
+            thumb.source = root.realurl.replace("&amp;","&").replace("amp;","")
         }
     }
     
