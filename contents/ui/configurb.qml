@@ -19,6 +19,8 @@ Item {
     property alias cfg_cleaner: cleanercheck.checked
     property alias cfg_cleanersize: cleanerspin.value
     
+    property alias cfg_delay: spindelay.value
+    
      property alias cfg_colortext: _textcolor.text
      property alias cfg_colorshadow: _shadowcolor.text
     
@@ -121,12 +123,34 @@ Item {
                     text: "Allow posts marked as nsfw (for adults)"
                 }
                 
+        QtLayouts.RowLayout{     
+            QtControls.Label {
+                        QtLayouts.Layout.fillWidth: true
+                        verticalAlignment: Text.AlignBottom
+                        text: "Wait "
+            }
+            
+            QtControls.SpinBox {
+                        id: spindelay
+            }
+            QtControls.Label {
+                        QtLayouts.Layout.fillWidth: true
+                        verticalAlignment: Text.AlignBottom
+                        text: "seconds before starting."
+            }
+        }
+        QtControls.Label {
+                        QtLayouts.Layout.fillWidth: true
+                        verticalAlignment: Text.AlignTop
+                        text: "(could help plasma to start faster in very slow connections.)"
+        }
+                
         QtLayouts.RowLayout{
-            Item{width: 20}        
+            //Item{width: 20}        
 //             Column{
                 QtControls.CheckBox {
                         id: cleanercheck
-                        QtLayouts.Layout.fillWidth: true
+                        //QtLayouts.Layout.fillWidth: true
                         text: "Erase disk cache if larger than:  "
                 }
                 QtControls.SpinBox {

@@ -45,6 +45,17 @@ Item {
     property real fraccion: 0
     
     Plasmoid.compactRepresentation: CompactRepresentation {}
+    
+    
+    Timer {
+        id: delayer
+        function delay(delayTime, cb) {
+        delayer.interval = delayTime;
+        delayer.repeat = false;
+        delayer.triggered.connect(cb);
+        delayer.start();
+    }
+    }
 
     Dialog{
         id: dialogo
@@ -146,6 +157,10 @@ Item {
         plasmoid.setAction('opendialogurl', i18n('Open reddit post on a window'), 'system-run');
         plasmoid.setAction('opendialogrealurl', i18n('Open linked url on a window'), 'system-run');
         
+        delayer.delay(plasmoid.configuration.delay*1000, function() {
+//             time.running = true
+            time.start()
+        })
     }
     function action_reload(){
         time.restart()
@@ -390,7 +405,7 @@ Item {
     
     Timer {
 	  id: time
-	  running: true
+	  //running: true
 	  triggeredOnStart: true
 	  interval: plasmoid.configuration.intervalo * 60 * 1000
 	  onTriggered: {

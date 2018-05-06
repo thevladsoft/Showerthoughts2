@@ -25,6 +25,11 @@
         <default>15</default>
     </entry>
     
+    <entry name="delay" type="Int">
+        <label>espera para arrancar</label>
+        <default>0</default>
+    </entry>
+    
     <entry name="subreddit" type="String">
         <label>Subreddit</label>
         <default>showerthoughts</default>
