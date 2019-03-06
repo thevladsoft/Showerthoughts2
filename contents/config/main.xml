@@ -107,6 +107,10 @@
         <label>shadowcolor</label>
         <default>black</default>
     </entry>
+    <entry name="barras" type="Bool">
+        <label>Hide scrollbars</label>
+        <default>false</default>
+    </entry>
   </group>
 
 </kcfg>

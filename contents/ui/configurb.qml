@@ -19,6 +19,8 @@ Item {
     property alias cfg_cleaner: cleanercheck.checked
     property alias cfg_cleanersize: cleanerspin.value
     
+    property alias cfg_barras: barrascheck.checked
+    
     property alias cfg_delay: spindelay.value
     
      property alias cfg_colortext: _textcolor.text
@@ -166,6 +168,11 @@ Item {
                 }
 //             }
         }
+        QtControls.CheckBox {
+                    id: barrascheck
+                    //QtLayouts.Layout.fillWidth: true
+                    text: "Hide vertical scrollbars"
+            }
                     
     }
 }

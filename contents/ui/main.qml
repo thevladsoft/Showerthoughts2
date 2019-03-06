@@ -308,7 +308,7 @@ Item {
             width: root.width
             height: root.height
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+            verticalScrollBarPolicy: plasmoid.configuration.barras?Qt.ScrollBarAlwaysOff:Qt.ScrollBarAlwaysOn
             contentItem :tooltip
             QtControls.BusyIndicator{
                 id: busy
