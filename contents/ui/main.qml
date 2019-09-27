@@ -406,6 +406,7 @@ Item {
     Timer {
 	  id: time
 	  //running: true
+	  repeat: true
 	  triggeredOnStart: true
 	  interval: plasmoid.configuration.intervalo * 60 * 1000
 	  onTriggered: {
