@@ -495,12 +495,14 @@ Item {
             }
             root.thumblowurl = d["data"]["children"][N]["data"].thumbnail
             
+            root.realurl = d["data"]["children"][N]["data"].url
             root.isp = d["data"]["children"][N]["data"].title
             root.isp += "\n      -/u/"+d["data"]["children"][N]["data"].author+"\n            /r/"+root.cursubreddit
-            tooltip.mainText = d["data"]["children"][N]["data"].title
+            if(plasmoid.configuration.urlshow){ tooltip.mainText = d["data"]["children"][N]["data"].title+ "\n[\uf08e"+root.realurl.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]+"]"}
+                else{tooltip.mainText = d["data"]["children"][N]["data"].title}
             tooltip.subText = "      /u/"+d["data"]["children"][N]["data"].author+"\n            /r/"+root.cursubreddit
             root.url = "https://www.reddit.com"+d["data"]["children"][N]["data"].permalink
-            root.realurl = d["data"]["children"][N]["data"].url
+            
             if (!plasmoid.configuration.tit_o_img && !plasmoid.configuration.tit_e_img) { busy.visible = false}
             if(thumb.visible)load_thumb()
             if(!dialogo.visible){

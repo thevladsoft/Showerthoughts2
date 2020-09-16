@@ -111,6 +111,10 @@
         <label>Hide scrollbars</label>
         <default>false</default>
     </entry>
+    <entry name="urlshow" type="Bool">
+        <label> </label>
+        <default>true</default>
+    </entry>
   </group>
 
 </kcfg>

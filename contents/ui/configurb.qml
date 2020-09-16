@@ -21,6 +21,8 @@ Item {
     
     property alias cfg_barras: barrascheck.checked
     
+    property alias cfg_urlshow: urlshow.checked
+    
     property alias cfg_delay: spindelay.value
     
      property alias cfg_colortext: _textcolor.text
@@ -172,6 +174,12 @@ Item {
                     id: barrascheck
                     //QtLayouts.Layout.fillWidth: true
                     text: "Hide vertical scrollbars"
+            }
+            
+        QtControls.CheckBox {
+                    id: urlshow
+                    //QtLayouts.Layout.fillWidth: true
+                    text: "Show linked url on tooltip"
             }
                     
     }
