@@ -22,7 +22,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4 as QtControls
 import org.kde.plasma.plasmoid 2.0
-import QtWebKit 3.0
+//import QtWebKit 3.0
+import QtWebView 1.15
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1 as QtLayouts
 import QtQuick.Controls.Styles 1.4
