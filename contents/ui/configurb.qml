@@ -11,6 +11,7 @@ Item {
     
     property alias cfg_back_img: backcheck.checked
     property alias cfg_transback: transbackcheck.checked
+    property alias cfg_transshadow: transshadow.checked
     property alias cfg_middledirect: middledirectcheck.checked
     property alias cfg_middledialog: middledialogcheck.checked
     property alias cfg_middlemouse: middlemousecheck.checked
@@ -50,10 +51,18 @@ Item {
     QtLayouts.ColumnLayout {
         spacing: units.smallSpacing * 4
 
-        QtControls.CheckBox {
-            id: transbackcheck
-            QtLayouts.Layout.fillWidth: true
-            text: "Transparent background"
+        QtLayouts.RowLayout{
+            QtControls.CheckBox {
+                id: transbackcheck
+                QtLayouts.Layout.fillWidth: true
+                text: "Transparent background"
+            }
+            QtControls.CheckBox {
+                id: transshadow
+                visible: transbackcheck.checked
+                QtLayouts.Layout.fillWidth: true
+                text: "Add a drop shadow"
+            }
         }
         
         QtLayouts.RowLayout{
@@ -72,7 +81,7 @@ Item {
         }
         QtLayouts.RowLayout{
             QtControls.Button {
-                text: "Text shadow color"
+                text: "Text contour color"
                 onClicked: {colorDialog.boton = 1;colorDialog.color = _shadowcolor.text;colorDialog.visible = true;}
             }
             

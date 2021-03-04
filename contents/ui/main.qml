@@ -132,7 +132,15 @@ Item {
     }
     
     Component.onCompleted: {
-        plasmoid.backgroundHints = plasmoid.configuration.transback ? 0 : 1;
+        if (plasmoid.configuration.transback == 0)
+                  plasmoid.backgroundHints = PlasmaCore.Types.StandardBackground
+        else {
+            if (plasmoid.configuration.transshadow == 0)
+                plasmoid.backgroundHints = PlasmaCore.Types.NoBackground
+            else
+                plasmoid.backgroundHints = PlasmaCore.Types.ShadowBackground
+        }
+        //plasmoid.configuration.transback ? 0 : 1;
         if(plasmoid.configuration.tit_o_img ){
                 thumb.visible = true
                 texty.visible = false
@@ -278,7 +286,26 @@ Item {
             }
         }
         onTransbackChanged: {
-            plasmoid.backgroundHints = plasmoid.configuration.transback ? 0 : 1;
+            //plasmoid.backgroundHints = plasmoid.configuration.transback ? 0 : 1;
+            if (plasmoid.configuration.transback == 0)
+                  plasmoid.backgroundHints = PlasmaCore.Types.StandardBackground
+            else {
+                if (plasmoid.configuration.transshadow == 0)
+                    plasmoid.backgroundHints = PlasmaCore.Types.NoBackground
+                else
+                    plasmoid.backgroundHints = PlasmaCore.Types.ShadowBackground
+            }
+        }
+        onTransshadowChanged: {
+            //plasmoid.backgroundHints = plasmoid.configuration.transback ? 0 : 1;
+            if (plasmoid.configuration.transback == 0)
+                  plasmoid.backgroundHints = PlasmaCore.Types.StandardBackground
+            else {
+                if (plasmoid.configuration.transshadow == 0)
+                    plasmoid.backgroundHints = PlasmaCore.Types.NoBackground
+                else
+                    plasmoid.backgroundHints = PlasmaCore.Types.ShadowBackground
+            }
         }
         onMiddledirectChanged: {
         }
