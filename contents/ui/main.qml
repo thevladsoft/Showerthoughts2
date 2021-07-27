@@ -342,7 +342,7 @@ Item {
                 id: busy
                 width: scrolly.width
                 height: scrolly.height
-                running: true
+                running: plasmoid.configuration.busyanim
                 visible: false
             }
             Image{

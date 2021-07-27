@@ -119,6 +119,11 @@
         <label> </label>
         <default>true</default>
     </entry>
+    
+     <entry name="busyanim" type="Bool">
+        <label>Busy animated</label>
+        <default>true</default>
+    </entry>
   </group>
 
 </kcfg>

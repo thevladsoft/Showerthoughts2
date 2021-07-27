@@ -24,6 +24,8 @@ Item {
     
     property alias cfg_urlshow: urlshow.checked
     
+    property alias cfg_busyanim: animbusy.checked
+    
     property alias cfg_delay: spindelay.value
     
      property alias cfg_colortext: _textcolor.text
@@ -189,6 +191,12 @@ Item {
                     id: urlshow
                     //QtLayouts.Layout.fillWidth: true
                     text: "Show linked url on tooltip"
+            }
+            
+        QtControls.CheckBox {
+                    id: animbusy
+                    //QtLayouts.Layout.fillWidth: true
+                    text: "Make the 'busy indicator' animated"
             }
                     
     }
