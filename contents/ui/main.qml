@@ -23,7 +23,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4 as QtControls
 import org.kde.plasma.plasmoid 2.0
 //import QtWebKit 3.0
-import QtWebView 1.15
+//import QtWebView 1.15
+import QtWebEngine 1.1
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1 as QtLayouts
 import QtQuick.Controls.Styles 1.4
@@ -79,7 +80,7 @@ Item {
                     minimumValue: 0
                     maximumValue: 100
                     height: 5
-                    width: webscrolly.width
+                    width: web.width//webscrolly.width
                     value: web.loadProgress
                     anchors.top: dialogo.top
                     style: ProgressBarStyle {
@@ -98,21 +99,23 @@ Item {
                                 }
                            }
             }
-            QtControls.ScrollView{
-                id: webscrolly
-                width: dialogo.width-20
-                height: dialogo.height-progres.height-55
-                anchors.top: progres.bottom
-                anchors.left: dialogo.left
-                contentItem :web
+//             QtControls.ScrollView{
+//                 id: webscrolly
+//                 width: dialogo.width-20
+//                 height: dialogo.height-progres.height-55
+//                 anchors.top: progres.bottom
+//                 anchors.left: dialogo.left
+//                 contentItem :web
                 
-                WebView {
+                WebEngineView {
                     id: web
-                    anchors.fill: parent
+                    anchors.fill: dialogo.fill
+                    width: dialogo.width-20
+                    height: dialogo.height-progres.height-55
                     url: ""
                     visible:true
                 }
-            }
+            //}
             
         }
         
