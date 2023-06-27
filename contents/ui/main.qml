@@ -363,42 +363,46 @@ Item {
                  mainText: ""  
                  Column{
                     id: col
-                    AnimatedImage{
+                    // AnimatedImage{
+                    WebEngineView{
                         id: thumb
-                        playing: false
-                        cache: false
-                        fillMode: Image.PreserveAspectFit
+                        // playing: false
+                        // cache: false
+                        // fillMode: Image.PreserveAspectFit
+                        property var source: ""
+                        url: source
                         width: scrolly.width
                          height: scrolly.height*fraccion
                         opacity: 1.0
                         onVisibleChanged:{
+                            // print(url)
                             if(thumb.visible){/*busy.visible = true;*/load_thumb()}
                         }
-                        onStatusChanged: {
-                            if (thumb.status == Image.Loading){
-                                busy.visible = true
-                            }
-                            if (thumb.status == Image.Ready || thumb.status == Image.Error || thumb.status == Image.Null) {
-                                if(thumb.status == Image.Error){
-                                    if(thumb.source == root.realurl){
-                                        if(root.thumbhighurl){
-                                            thumb.source = root.thumbhighurl
-                                        }else{
-                                            thumb.source = root.imagenurl
-                                        }
-                                    }else if(thumb.source == root.thumbhighurl){
-                                        if(root.thumblowurl){
-                                            thumb.source = root.thumblowurl
-                                        }else{
-                                            thumb.source = root.imagenurl
-                                        }
-                                    }else{print("c")
-                                        thumb.source = root.imagenurl
-                                    }
-                                }
-                                busy.visible = false
-                            }
-                        }
+                        // onStatusChanged: {
+                        //     if (thumb.status == Image.Loading){
+                        //         busy.visible = true
+                        //     }
+                        //     if (thumb.status == Image.Ready || thumb.status == Image.Error || thumb.status == Image.Null) {
+                        //         if(thumb.status == Image.Error){
+                        //             if(thumb.source == root.realurl){
+                        //                 if(root.thumbhighurl){
+                        //                     thumb.source = root.thumbhighurl
+                        //                 }else{
+                        //                     thumb.source = root.imagenurl
+                        //                 }
+                        //             }else if(thumb.source == root.thumbhighurl){
+                        //                 if(root.thumblowurl){
+                        //                     thumb.source = root.thumblowurl
+                        //                 }else{
+                        //                     thumb.source = root.imagenurl
+                        //                 }
+                        //             }else{print("c")
+                        //                 thumb.source = root.imagenurl
+                        //             }
+                        //         }
+                        //         busy.visible = false
+                        //     }
+                        // }
                     }
                     Text {  
                         id: texty
